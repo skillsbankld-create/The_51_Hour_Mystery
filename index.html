@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 51-Hour Mystery | Skills Bank</title>
+<style>
+:root{
+  --navy:#080928; --navy-2:#1A1C46; --teal:#40BDA9; --teal-ink:#1C7A6C; --teal-bg:#E1F5F1;
+  --ice:#EBF4FF; --ice-2:#DDE9F8; --line:#CFDAEA; --line-2:#B8C5D9; --slate:#5D6179; --white:#fff;
+  --amber:#C9780F; --amber-2:#E9A23B; --amber-bg:#FDF3E2; --red:#B9433A; --red-bg:#FBEBE9;
+  --cs:#40BDA9; --op:#3D63DD; --qa:#8A56CC;
+  --font:"Segoe UI","Helvetica Neue",Arial,"Noto Sans","Noto Sans Arabic",Tahoma,sans-serif;
+  --radius:4px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{overflow-x:clip;font-family:var(--font);color:var(--navy);background:var(--ice);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+html[lang=ar] body{font-family:"Segoe UI","Noto Sans Arabic","Noto Kufi Arabic","Geeza Pro",Tahoma,Arial,sans-serif;line-height:1.65}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ico{width:18px;height:18px;flex:none;display:inline-block;vertical-align:middle}
+.ico.s{width:15px;height:15px}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;padding:10px 24px;min-height:66px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{height:36px;width:auto;display:block}
+.prog{border-inline-start:1px solid var(--line);padding-inline-start:14px;font-size:12px;color:var(--slate);line-height:1.3;white-space:nowrap}
+.prog b{display:block;color:var(--navy);font-size:13px;font-weight:700}
+.nav{display:flex;justify-content:center;align-items:center;gap:2px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.nav li{display:flex;align-items:center}
+.nav li+li::before{content:"";width:18px;height:1px;background:var(--line-2);margin:0 4px}
+.nav button{display:flex;align-items:center;gap:8px;border:0;background:none;padding:6px 8px;border-radius:var(--radius);font-size:13px;color:var(--slate);white-space:nowrap}
+.nav button[disabled]{cursor:default}
+.nav button[disabled]:not(.cur){opacity:.55}
+.nav .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;border:1.5px solid var(--line-2);background:#fff}
+.nav .cur{color:var(--navy);font-weight:700}
+.nav .cur .n{background:var(--navy);border-color:var(--navy);color:#fff}
+.nav .done .n{background:var(--teal);border-color:var(--teal);color:var(--navy)}
+.tools{display:flex;align-items:center;gap:10px}
+.evbtn{display:flex;align-items:center;gap:8px;border:1.5px solid var(--navy);background:#fff;border-radius:var(--radius);padding:7px 12px;font-weight:600;font-size:14px}
+.evbtn:hover{background:var(--ice)}
+.evbtn .cnt{background:var(--navy);color:#fff;border-radius:10px;min-width:22px;padding:0 6px;font-size:12px;line-height:20px;text-align:center}
+.evbtn.pulse .cnt{animation:pulse 1s ease 2}
+@keyframes pulse{50%{background:var(--teal);color:var(--navy);transform:scale(1.15)}}
+.lang{display:flex;border:1.5px solid var(--line-2);border-radius:var(--radius);overflow:hidden}
+.lang button{border:0;background:#fff;padding:6px 11px;font-size:13px;font-weight:700;color:var(--slate)}
+.lang button[aria-pressed=true]{background:var(--navy);color:#fff}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1300px;margin:0 auto;padding:26px 24px 70px}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:18px;flex-wrap:wrap}
+.shead h2{margin:0;font-size:28px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.shead p.inst{margin:6px 0 0;font-size:16px;color:var(--navy);max-width:68ch}
+.shead p.sub{margin:4px 0 0;font-size:14px;color:var(--slate);max-width:72ch}
+.panel{background:#fff;border:1px solid var(--line);border-radius:6px}
+.sfoot{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.sfoot .hint{color:var(--slate);font-size:14px;max-width:62ch}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:var(--radius);padding:10px 18px;font-weight:700;font-size:15px;border:1.5px solid transparent;transition:background .15s,border-color .15s}
+.btn-p{background:var(--teal);color:var(--navy);border-color:var(--teal)}
+.btn-p:hover{background:#56C9B6}
+.btn-p[disabled]{background:var(--ice-2);border-color:var(--ice-2);color:#8A93A8;cursor:not-allowed}
+.btn-s{background:#fff;color:var(--navy);border-color:var(--navy)}
+.btn-s:hover{background:var(--ice)}
+.btn-s[disabled]{opacity:.45;cursor:not-allowed}
+.btn-g{background:none;border-color:transparent;color:var(--navy);padding:8px 10px;font-weight:600}
+.btn-g:hover{background:var(--ice)}
+.btn-g[disabled]{opacity:.4;cursor:not-allowed}
+.btn-lg{padding:15px 28px;font-size:17px}
+
+.confirm{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--amber-bg);border:1px solid #EFD3A6;border-radius:var(--radius);padding:12px 16px;margin-top:14px}
+.confirm p{margin:0;flex:1;min-width:240px;font-weight:600}
+.note{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--slate)}
+.msg{margin-top:10px;font-size:13px;color:var(--amber);font-weight:600;display:flex;gap:6px;align-items:center}
+
+/* ---------- welcome ---------- */
+.welcome{display:grid;grid-template-columns:1.05fr 1fr;gap:0;min-height:560px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.cover{position:relative;background:var(--navy);color:#fff;padding:120px 48px 44px;overflow:hidden}
+.cover::before,.cover::after{content:"";position:absolute;top:0;width:96px;height:96px;background:var(--teal);clip-path:polygon(0 0,100% 0,0 100%)}
+.cover::before{inset-inline-start:0}
+.cover::after{inset-inline-start:96px}
+html[dir=rtl] .cover::before,html[dir=rtl] .cover::after{clip-path:polygon(0 0,100% 0,100% 100%)}
+.cover .case{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--teal)}
+.cover h1{margin:10px 0 0;font-size:54px;line-height:1;font-weight:800;letter-spacing:-.015em;text-transform:uppercase}
+html[lang=ar] .cover h1{font-size:50px;line-height:1.2;letter-spacing:0}
+.cover .tag{margin:16px 0 0;font-size:17px;color:#C9D6EA;max-width:34ch}
+.status{display:inline-flex;align-items:center;gap:8px;margin-top:26px;border:1px solid #3B3E6B;border-radius:var(--radius);padding:6px 12px;font-size:13px;color:#fff}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--amber-2)}
+.memo{margin-top:34px;border-inline-start:3px solid var(--teal);padding-inline-start:18px;color:#DCE5F3;font-size:15px;max-width:52ch}
+.memo b{display:block;color:#fff;font-size:13px;margin-bottom:6px}
+.memo p{margin:0 0 8px}
+.brief{padding:40px 44px;display:flex;flex-direction:column;gap:22px}
+.brief h2{margin:0;font-size:24px;font-weight:800;line-height:1.2}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.fact{padding:14px 16px;background:var(--ice)}
+.fact+.fact{border-inline-start:1px solid var(--line)}
+.fact .v{font-size:30px;font-weight:800;line-height:1.1}
+.fact.over .v{color:var(--amber)}
+.fact .k{font-size:13px;color:var(--slate)}
+.meta2{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;font-size:14px;margin:0}
+.meta2 dt{color:var(--slate)}
+.meta2 dd{margin:0;font-weight:600}
+.mission p{margin:4px 0 0}
+.mission h3,.objs h3{margin:0;font-size:14px;color:var(--slate);font-weight:600}
+.objs ol{list-style:none;padding:0;margin:8px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.objs li{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.objs li .n{width:26px;height:26px;border-radius:var(--radius);background:var(--navy);color:var(--teal);display:grid;place-items:center;font-size:13px}
+.objs li+li::before{content:"";width:22px;height:2px;background:var(--line-2)}
+.gemba{font-size:13px;color:var(--slate);margin-top:auto}
+
+/* ---------- stage 1 ---------- */
+.budget{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px 16px}
+.budget .lbl{font-size:13px;color:var(--slate);line-height:1.2}
+.budget .num{font-size:26px;font-weight:800;line-height:1}
+.budget .num small{font-size:15px;color:var(--slate);font-weight:600}
+.pips{display:flex;gap:4px}
+.pips i{width:12px;height:22px;border-radius:2px;background:var(--teal)}
+.pips i.u{background:var(--ice-2)}
+.depts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.dtile{text-align:start;background:#fff;border:1.5px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:center}
+.dtile:hover{border-color:var(--line-2)}
+.dtile[aria-pressed=true]{border-color:var(--navy);box-shadow:inset 0 -3px 0 var(--teal)}
+.av{grid-row:span 2;width:40px;height:40px;border-radius:var(--radius);background:var(--navy);color:var(--teal);display:grid;place-items:center;font-weight:800;font-size:14px}
+.dtile .dn{font-weight:800;font-size:16px}
+.dtile .pp{font-size:13px;color:var(--slate)}
+.dcount{grid-row:span 2;text-align:end;font-size:12px;color:var(--slate);line-height:1.3}
+.dcount .bars{display:flex;gap:3px;justify-content:flex-end;margin-bottom:4px}
+.dcount .bars i{width:16px;height:6px;border-radius:2px;background:var(--ice-2)}
+.dcount .bars i.on{background:var(--navy)}
+.dcount .need{color:var(--amber);font-weight:700}
+.desk{display:grid;grid-template-columns:1fr 1.1fr;gap:16px;align-items:start}
+.qpanel{padding:16px}
+.qpanel h3,.apanel h3{margin:0 0 10px;font-size:14px;color:var(--slate);font-weight:600}
+.qlist{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.q{width:100%;text-align:start;display:flex;gap:10px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);border-radius:var(--radius);padding:11px 13px;font-size:15px;line-height:1.4}
+.q:hover{border-color:var(--line-2);background:#FAFCFF}
+.q .rd{width:16px;height:16px;border-radius:50%;border:2px solid var(--line-2);flex:none;margin-top:2px}
+.q[aria-checked=true]{border-color:var(--navy);background:var(--ice)}
+.q[aria-checked=true] .rd{border:5px solid var(--navy)}
+.q.asked{background:#F7FAFE}
+.q.asked .rd{border:0;background:none;color:var(--teal-ink)}
+.q.viewing{border-color:var(--teal)}
+.q .st{display:block;font-size:12px;color:var(--teal-ink);font-weight:700;margin-top:3px}
+.q.blocked:not(.asked){color:#8A93A8}
+.askbar{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.askbar .note{flex:1;min-width:200px}
+.apanel{padding:18px 20px;min-height:320px}
+.who{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.who .av{grid-row:auto;color:var(--teal)}
+.who b{display:block;font-size:15px}
+.who span{font-size:13px;color:var(--slate)}
+.asked-q{font-weight:700;font-size:16px;margin:0 0 10px;padding-inline-start:12px;border-inline-start:3px solid var(--line-2)}
+.ans{margin:0 0 16px;font-size:15.5px;max-width:64ch}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:3px}
+.chip.rec{background:var(--teal-bg);color:var(--teal-ink)}
+.chip.ins{background:var(--ice);color:var(--slate);border:1px solid var(--line)}
+.found{display:flex;align-items:center;gap:12px;justify-content:space-between;border:1px solid var(--line);border-inline-start:4px solid var(--teal);border-radius:var(--radius);padding:10px 14px;background:#fff;flex-wrap:wrap}
+.found b{font-size:15px}
+.found .note{margin-top:2px}
+.empty{color:var(--slate);display:grid;place-items:center;text-align:center;min-height:260px;gap:10px}
+.empty .ico{width:34px;height:34px;color:var(--line-2)}
+
+/* ---------- drawer ---------- */
+.scrim{position:fixed;inset:0;background:rgba(8,9,40,.28);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(470px,100%);background:#fff;z-index:51;display:flex;flex-direction:column;transform:translateX(105%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s;box-shadow:-8px 0 30px rgba(8,9,40,.15)}
+html[dir=rtl] .drawer{transform:translateX(-105%)}
+.drawer.open{transform:none!important;visibility:visible;transition:transform .25s ease}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
+.dhead h2{margin:0;font-size:18px;font-weight:800}
+.dtabs{display:flex;border-bottom:1px solid var(--line);padding:0 12px}
+.dtabs button{border:0;background:none;padding:12px 10px;font-weight:600;font-size:14px;color:var(--slate);border-bottom:3px solid transparent;margin-bottom:-1px}
+.dtabs button[aria-selected=true]{color:var(--navy);border-bottom-color:var(--teal)}
+.dbody{flex:1;overflow:auto;padding:16px 18px 30px}
+.dlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ditem{width:100%;text-align:start;display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:var(--radius);padding:11px 12px;background:#fff}
+.ditem:hover{border-color:var(--navy)}
+.ditem .ico{color:var(--teal-ink)}
+.ditem small{display:block;color:var(--slate);font-size:12px}
+.insight{border:1px solid var(--line);border-radius:var(--radius);padding:11px 12px;background:#FAFCFF}
+.insight .src{font-size:12px;color:var(--slate);margin-bottom:4px;display:flex;justify-content:space-between;gap:8px}
+.insight p{margin:0;font-size:14px}
+.disc{font-size:13px;color:var(--slate);margin:0 0 12px}
+
+/* evidence document */
+.doc{border:1px solid var(--line-2);border-radius:var(--radius);overflow:hidden;background:#fff;font-size:14px}
+.doc .dh{background:var(--navy);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;gap:10px;font-size:12px}
+.doc .dh b{color:var(--teal);letter-spacing:.04em}
+.doc h3{margin:0;padding:12px 14px 4px;font-size:17px;font-weight:800}
+.doc .dsub{padding:0 14px 10px;font-size:12px;color:var(--slate);border-bottom:1px solid var(--line)}
+.doc dl{display:grid;grid-template-columns:minmax(120px,40%) 1fr;margin:0;padding:6px 14px}
+.doc dt,.doc dd{padding:6px 0;border-bottom:1px dashed var(--line);margin:0}
+.doc dt{color:var(--slate);padding-inline-end:10px}
+.doc dd{font-weight:600}
+.doc table{width:100%;border-collapse:collapse;margin:4px 0 6px}
+.doc th{font-size:11px;color:var(--slate);text-align:start;font-weight:600;padding:6px 14px;background:var(--ice)}
+.doc td{padding:7px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.doc td:first-child{white-space:nowrap;font-weight:700;width:1%}
+.doc ol{margin:8px 0;padding-inline-start:34px;padding-inline-end:14px}
+.doc ol li{margin:5px 0}
+.doc .intro{padding:10px 14px 0;margin:0}
+.doc .dn{margin:6px 14px 14px;padding:9px 12px;background:var(--ice);border-radius:3px;font-weight:600}
+.ltr{direction:ltr;unicode-bidi:isolate}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:var(--radius);display:flex;align-items:center;gap:10px;font-weight:600;z-index:60;opacity:0;pointer-events:none;transition:all .25s;max-width:min(560px,90vw)}
+.toast .ico{color:var(--teal)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- stepper ---------- */
+.stepper{display:flex;gap:6px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.stepper li{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--slate);padding:6px 12px 6px 6px;border-radius:var(--radius);background:#fff;border:1px solid var(--line)}
+html[dir=rtl] .stepper li{padding:6px 6px 6px 12px}
+.stepper .n{width:22px;height:22px;border-radius:3px;display:grid;place-items:center;font-size:12px;font-weight:800;background:var(--ice-2)}
+.stepper .cur{color:var(--navy);font-weight:700;border-color:var(--navy)}
+.stepper .cur .n{background:var(--navy);color:#fff}
+.stepper .done .n{background:var(--teal);color:var(--navy)}
+.how{background:#fff;border:1px dashed var(--line-2);border-radius:var(--radius);padding:12px 16px;margin-bottom:14px;font-size:14px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.how .mini{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.how .mini span{border:1.5px solid var(--line-2);border-radius:3px;padding:3px 8px;background:var(--ice);font-weight:600;font-size:13px}
+.how .mini .ret{border-color:var(--amber-2);background:var(--amber-bg)}
+
+/* ---------- map ---------- */
+.mapwrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 20px 24px}
+.map{position:relative;min-width:1060px}
+.mrow{display:grid;grid-template-columns:52px repeat(6,minmax(0,1fr)) 52px;column-gap:28px;align-items:stretch;position:relative;z-index:1}
+.rrow{margin-top:58px;align-items:start}
+.exzone{margin-top:30px;padding:40px 0 12px;border-top:1px dashed var(--line-2);background:linear-gradient(#FFFAF2,#FFFAF2) no-repeat;position:relative}
+.zonelbl{font-size:13.5px;font-weight:800;color:var(--navy);margin:0 0 10px}
+.exzone .zonelbl.ex{position:absolute;top:10px;inset-inline-start:12px;color:#8A520A;margin:0;font-size:13.5px}
+.exhelp{display:flex;gap:12px;margin:22px 12px 4px;padding:12px 16px;background:#fff;border:1px solid #EFD3A6;border-radius:var(--radius);font-size:14px;color:var(--navy)}
+.exhelp>.ico{color:var(--amber);margin-top:2px}
+.exhelp p{margin:0}
+.exhelp ol{margin:4px 0 8px;padding-inline-start:22px;font-weight:700}
+.exhelp .exex{color:var(--slate);font-size:13px;border-top:1px dashed #EFD3A6;padding-top:8px}
+.pathread{margin:2px 0 0;font-size:12.5px;font-weight:700;color:var(--navy);background:var(--amber-bg);border-radius:3px;padding:5px 7px}
+.pathread.open{font-weight:500;color:var(--slate);background:none;padding:0}
+.exzone .rrow{margin-top:0}
+.exzone .rrow+.rrow{margin-top:30px}
+.rrow>*{grid-row:1}
+.lanetag{align-self:center;justify-self:center;display:flex;align-items:center;gap:3px;color:var(--amber);font-size:13px}
+.lanepanel{background:#fff;border:1px solid #EFD3A6;border-radius:var(--radius);padding:8px 10px;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--slate)}
+.lanepanel .lp-h{font-weight:800;color:var(--amber);font-size:12.5px}
+.lanepanel label{display:flex;flex-direction:column;gap:3px;font-weight:600;color:var(--navy);font-size:12.5px;line-height:1.35}
+.lanepanel select{font-size:13px;padding:5px 6px;border:1px solid var(--line-2);border-radius:3px;background:#fff;color:var(--navy);width:100%}
+.lanepanel .stale{margin:0;color:var(--amber);font-weight:600;display:flex;gap:4px}
+.slot.exslot{border-color:var(--amber-2);background:#fff;color:var(--amber);min-height:122px}
+.slot.view{cursor:default;background:#fff;color:var(--slate)}
+.mc .cap.muted{color:var(--slate);font-style:italic}
+.checklist{padding:14px 18px;margin-top:14px}
+.checklist h3{margin:0 0 8px;font-size:15px;font-weight:800}
+.checklist ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 22px}
+.checklist li{display:flex;align-items:center;gap:8px;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.checklist li b{margin-inline-start:auto;white-space:nowrap}
+.checklist li span{color:var(--amber);display:flex}
+.checklist li.ok span{color:var(--navy)}
+.seltool .loc{color:var(--slate);font-size:13px;margin-inline-end:8px}
+.se{align-self:center;height:44px;border-radius:22px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;text-align:center;line-height:1.1;padding:0 4px}
+.mc{position:relative;background:#fff;border:2px solid var(--line-2);border-radius:var(--radius);padding:10px 10px 9px;min-height:122px;display:flex;flex-direction:column;gap:6px;transition:border-color .15s,box-shadow .15s;text-align:start}
+.mc.clk{cursor:pointer}
+.mc.drag{cursor:grab}
+.mc.owned{border-color:var(--navy)}
+.mc .tt{font-weight:700;font-size:14px;line-height:1.3;flex:1}
+.mc .own{font-size:12px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:5px;background:var(--ice);border-radius:3px;padding:3px 6px}
+.mc .own .ico{color:var(--slate)}
+.ownsel{display:flex;flex-direction:column;gap:2px}
+.ownsel span{font-size:10.5px;color:var(--slate);font-weight:600}
+.mc.sel{box-shadow:0 0 0 4px rgba(64,189,169,.4)}
+.mc.pick:hover,.mc.pick.sel{box-shadow:0 0 0 4px rgba(64,189,169,.4)}
+.mc .cap{font-size:11.5px;color:var(--slate);line-height:1.3;border-bottom:1px dashed var(--line);padding-bottom:5px}
+.mc .cap b{color:var(--amber)}
+.mc .cf{font-size:11px;font-weight:700;display:inline-flex;gap:4px;align-items:center}
+.mc .cf{color:var(--slate)}
+.mc .mks{display:flex;gap:4px;flex-wrap:wrap}
+.mk{display:inline-flex;align-items:center;gap:3px;background:var(--amber-bg);color:var(--amber);border:1px solid #EFD3A6;border-radius:3px;font-size:11px;font-weight:800;padding:1px 6px}
+.mk.ok{background:var(--teal-bg);color:var(--teal-ink);border-color:#B9E6DD}
+.mk.ds{background:var(--ice);color:var(--slate);border-color:var(--line)}
+.wait{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--amber);background:var(--amber-bg);border-radius:3px;padding:3px 6px}
+.wait.ext{color:var(--slate);background:var(--ice)}
+.flag{font-size:11px;font-weight:700;color:var(--red);background:var(--red-bg);border-radius:3px;padding:2px 6px}
+.mc.f-pos,.mc.f-own{outline:2px dashed var(--red);outline-offset:3px}
+.dsel{width:100%;font-size:12px;padding:5px 4px;border:1px solid var(--line-2);border-radius:3px;background:#fff;color:var(--navy)}
+.slot{border:2px dashed var(--line-2);border-radius:var(--radius);min-height:122px;display:grid;place-items:center;color:var(--slate);font-size:12.5px;text-align:center;padding:8px;background:#F6F9FE;cursor:pointer}
+.slot:hover{border-color:var(--navy)}
+.slot.armed{border-color:var(--teal);background:var(--teal-bg);color:var(--teal-ink);font-weight:700}
+.dropok{border-color:var(--teal)!important;background:var(--teal-bg)!important}
+.ghost{border:2px dashed var(--amber-2);border-radius:var(--radius);min-height:80px;display:grid;place-items:center;font-size:12.5px;color:var(--amber);padding:8px;text-align:center;background:#fff}
+.wires{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}
+.wires text{font-size:11px;font-weight:700;font-family:var(--font)}
+
+.seltool{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px;background:var(--ice);border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px;font-size:14px}
+.seltool b{margin-inline-end:6px}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:3px;overflow:hidden;background:#fff}
+.seg button{border:0;background:#fff;padding:5px 10px;font-size:13px}
+.seg button+button{border-inline-start:1px solid var(--line-2)}
+.seg button[aria-pressed=true]{background:var(--navy);color:#fff}
+.tray{margin-top:16px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:6px}
+.tray h3{margin:0 0 10px;font-size:14px;color:var(--slate);font-weight:600}
+.cards{display:flex;gap:12px;flex-wrap:wrap;min-height:70px}
+.tc{width:178px;text-align:start;background:#fff;border:2px solid var(--line-2);border-radius:var(--radius);padding:12px;font-weight:700;font-size:14px;line-height:1.3;cursor:grab;min-height:70px}
+.tc:hover{border-color:var(--navy);background:#FAFCFF}
+.tc.dim{opacity:.5}
+.edit-tools{display:flex;gap:6px}
+
+.retcfg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.rc{background:#fff;border:1px solid var(--line);border-inline-start:4px solid var(--amber-2);border-radius:var(--radius);padding:14px 16px}
+.rc h3{margin:0 0 10px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.rc .f{display:grid;grid-template-columns:minmax(150px,42%) 1fr;gap:6px 12px;align-items:center;margin-bottom:8px;font-size:14px}
+.rc .f label{color:var(--slate)}
+.rc .f .ifno{grid-column:1/-1;font-size:12.5px;font-weight:700;color:var(--amber);display:flex;align-items:center;gap:6px}
+.rc select{font-size:14px;padding:7px 8px;border:1px solid var(--line-2);border-radius:3px;background:#fff;width:100%}
+
+/* ---------- stage 3 ---------- */
+.flowline{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--slate);flex-wrap:wrap}
+.flowline span{font-weight:700;color:var(--navy)}
+.rgrid{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:16px;align-items:start}
+.rform{padding:16px 18px}
+.rform h3,.rlist h3{margin:0 0 12px;font-size:16px;font-weight:800}
+.fl{font-size:13px;color:var(--slate);font-weight:600;margin:12px 0 6px}
+.cats{display:flex;gap:6px;flex-wrap:wrap}
+.cat{border:1.5px solid var(--line-2);background:#fff;border-radius:3px;padding:6px 11px;font-size:13.5px;font-weight:600}
+.cat[aria-checked=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.evs{display:flex;flex-direction:column;gap:5px;max-height:340px;overflow:auto;padding:2px}
+.ev{display:flex;align-items:flex-start;gap:9px;padding:7px 10px;border:1px solid var(--line);border-radius:3px;font-size:13.5px;cursor:pointer;background:#fff}
+.ev:hover{border-color:var(--line-2)}
+.ev input{margin-top:3px;accent-color:var(--navy)}
+.ev small{display:block;color:var(--slate);font-size:12px}
+.ev.vf{border-style:dashed;border-color:var(--amber-2);background:var(--amber-bg)}
+.evgrp{font-size:12px;color:var(--slate);margin:6px 0 2px}
+.rlist{padding:16px 18px}
+.rcount{font-size:14px;color:var(--slate);margin-bottom:10px}
+.rcount b{font-size:22px;color:var(--navy)}
+.ri{border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;margin-bottom:8px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;align-items:start}
+.ri .mk{grid-row:span 2}
+.ri b{font-size:14px}
+.ri small{grid-column:2;color:var(--slate);font-size:12.5px}
+.ri .acts{grid-row:span 2;display:flex;gap:2px}
+.pickprompt{display:flex;gap:12px;align-items:center;color:var(--slate);min-height:150px;justify-content:center;text-align:center;padding:20px}
+
+/* ---------- stage 4 ---------- */
+.rv-hero{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:20px}
+.rv-hero h2{margin:0;font-size:40px;font-weight:800;letter-spacing:-.015em;line-height:1.05;text-transform:uppercase}
+html[lang=ar] .rv-hero h2{letter-spacing:0;line-height:1.3}
+.rv-hero p{margin:8px 0 0;font-size:17px;color:var(--slate)}
+.trio{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff}
+.trio div{padding:10px 22px;text-align:center}
+.trio div+div{border-inline-start:1px solid var(--line)}
+.trio b{display:block;font-size:34px;font-weight:800;line-height:1.1}
+.trio span{font-size:13px;color:var(--slate)}
+.trio .ov b{color:var(--amber)}
+.sec{margin-top:26px}
+.sec>h3{margin:0 0 12px;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.tl{padding:22px 22px 18px}
+.bar{position:relative;display:flex;height:64px;border-radius:4px;overflow:visible;background:var(--ice)}
+.bar .sg{position:relative;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;font-size:12.5px;font-weight:800;white-space:nowrap;transition:flex-grow 0s}
+.bar .sg+.sg{border-inline-start:2px solid #fff}
+.sg.q1,.sg.q2{background:var(--amber)}
+.sg.q2{background:#A9620B}
+.sg.cust{background:#8E97AD}
+.sg.other{background:var(--teal);color:var(--navy)}
+.sg span{padding:0 6px}
+.bar.anim .sg{animation:grow .9s cubic-bezier(.3,.7,.2,1) both}
+@keyframes grow{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+html[dir=rtl] .bar.anim .sg{animation-name:growr}
+@keyframes growr{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+.sla{position:absolute;top:-14px;bottom:-26px;width:0;border-inline-start:2px dashed var(--navy);z-index:2}
+.sla span{position:absolute;bottom:-2px;inset-inline-start:6px;font-size:12px;font-weight:800;white-space:nowrap;background:#fff;padding:0 4px}
+.axis{position:relative;height:42px;margin-top:6px;font-size:12px;color:var(--slate)}
+.axis .tk{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+html[dir=rtl] .axis .tk{transform:translateX(50%)}
+.axis .day{position:absolute;top:20px;font-weight:700;color:var(--navy);border-inline-start:1px solid var(--line-2);padding-inline-start:6px;font-size:12px}
+.legend{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.lg{border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:0 10px;align-items:center}
+.lg i{width:14px;height:14px;border-radius:2px;grid-row:span 3}
+.lg b{font-size:20px;font-weight:800;line-height:1.2}
+.lg span{font-size:13px;line-height:1.3}
+.lg small{font-size:12px;color:var(--slate)}
+.lg.hot{border-color:var(--amber-2);background:var(--amber-bg)}
+.lgtot{display:flex;justify-content:flex-end;gap:8px;font-size:14px;margin-top:8px;color:var(--slate)}
+.lgtot b{color:var(--navy)}
+.keyrev{margin-top:16px;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:center;padding:14px 16px;border-radius:var(--radius);background:var(--navy);color:#fff}
+.keyrev .big{grid-row:span 2;font-size:34px;font-weight:800;color:var(--amber-2);line-height:1}
+.keyrev p{margin:0;font-size:16px;font-weight:600}
+.keyrev small{color:#B9C6DD;font-size:13px}
+.slafact{margin:10px 0 0;font-size:14px;color:var(--slate)}
+.mapgrid{display:flex;flex-direction:column;gap:14px}
+.mapgrid>*{min-width:0}
+.cdet{padding:16px 20px;display:grid;grid-template-columns:minmax(200px,1fr) 1.4fr 1fr;gap:6px 26px;align-items:start}
+.cdet .hd{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:4px}
+.cdet h5:first-child{margin-top:0}
+.cdet h4{margin:0 0 4px;font-size:17px;font-weight:800}
+.cdet .hd .own{font-size:13px;color:var(--slate)}
+.cdet h5{margin:12px 0 4px;font-size:13px;color:var(--slate);font-weight:600}
+.cdet p{margin:0;font-size:14px}
+.evrow{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.evrow .y{color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.evrow .n{color:var(--slate);white-space:nowrap}
+.rbox{border-inline-start:3px solid var(--amber-2);padding:6px 10px;background:var(--amber-bg);margin-top:6px;border-radius:2px}
+.rbox b{font-size:14px;display:block}
+.rbox p{font-size:13.5px}
+.skipnote{margin-top:12px;display:flex;gap:10px;font-size:13.5px;color:var(--slate);background:#fff;border:1px dashed var(--line-2);border-radius:var(--radius);padding:10px 14px}
+.mylegend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:13px}
+.misslist{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.misslist div{font-size:13.5px;color:var(--red);font-weight:600;display:flex;gap:6px;align-items:center}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fcol{background:#fff;border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:6px;padding:14px 16px}
+.fcol.ms{border-top-color:var(--red)}
+.fcol.evd{border-top-color:var(--amber-2)}
+.fcol h4{margin:0 0 10px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.fcol ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.fcol li{font-size:14.5px;line-height:1.45}
+.fcol li+li{border-top:1px dashed var(--line);padding-top:10px}
+.fcol .lead{font-weight:600}
+.myrisks{margin-top:14px;padding:14px 16px}
+.myrisks h4{margin:0 0 8px;font-size:15px;font-weight:800}
+.mr{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;padding:8px 0;border-top:1px dashed var(--line);font-size:14px}
+.mr small{grid-column:2;color:var(--slate);font-size:13px}
+.closing{margin-top:30px;background:var(--navy);color:#fff;border-radius:6px;padding:28px 32px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;position:relative;overflow:hidden}
+.closing::after{content:"";position:absolute;inset-inline-end:0;top:0;width:70px;height:70px;background:var(--teal);clip-path:polygon(0 0,100% 0,100% 100%)}
+html[dir=rtl] .closing::after{clip-path:polygon(0 0,100% 0,0 100%)}
+.closing p{margin:0;font-size:22px;font-weight:800;line-height:1.3;max-width:40ch}
+.closing ol{list-style:none;margin:10px 0 0;padding:0;display:flex;gap:18px;flex-wrap:wrap;color:#C9D6EA;font-size:15px}
+.closing ol b{color:var(--teal)}
+.restart{color:#fff;border-color:#fff;background:transparent}
+.restart:hover{background:var(--navy-2)}
+
+@media (max-width:1100px){
+  .top{grid-template-columns:auto auto;grid-template-areas:"b t" "n n"}
+  .brand{grid-area:b}.tools{grid-area:t;justify-content:flex-end}.navw{grid-area:n}
+  .welcome{grid-template-columns:1fr}
+  .cdet{grid-template-columns:1fr}
+  .legend{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:820px){
+  .desk,.rgrid,.retcfg,.fgrid{grid-template-columns:1fr}
+  .depts{grid-template-columns:1fr}
+  .prog{display:none}
+  .nav button .lb{display:none}
+  .cover{padding:110px 26px 30px}.cover h1{font-size:40px}
+  .brief{padding:26px}
+  .rv-hero{grid-template-columns:1fr}
+  .rv-hero h2{font-size:30px}
+  .closing{grid-template-columns:1fr}
+}
+@media (max-width:820px){
+  .toast{left:12px;right:12px;bottom:12px;transform:translateY(20px);max-width:none;font-size:14px}
+  .toast.show{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+/* ---------- results v3 ---------- */
+.results .rh{margin:0 0 14px;font-size:19px;font-weight:800;display:flex;align-items:center;gap:10px}
+.rh .num{width:28px;height:28px;border-radius:var(--radius);background:var(--navy);color:var(--teal);display:grid;place-items:center;font-size:14px;flex:none}
+.rgrid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px;align-items:start}
+.rsec{padding:20px 22px}
+.results>.rsec{margin-top:16px}
+.rsec .lead{margin:-4px 0 12px;font-size:15px;font-weight:600}
+.rchip{display:inline-flex;align-items:center;font-size:12px;font-weight:800;padding:3px 9px;border-radius:3px;white-space:nowrap;flex:none}
+.rchip.ok{background:var(--teal-bg);color:var(--teal-ink)}
+.rchip.warn{background:var(--amber-bg);color:#8A520A}
+.rchip.bad{background:var(--red-bg);color:var(--red)}
+.mrl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.mrl li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:var(--radius)}
+.mrl .pos{width:24px;height:24px;border-radius:50%;background:var(--ice);display:grid;place-items:center;font-size:12px;font-weight:800}
+.mrc b{display:block;font-size:14.5px}
+.mrc small{color:var(--slate);font-size:12.5px}
+.rnote{display:flex;gap:7px;align-items:flex-start;margin:10px 0 0;font-size:13.5px;font-weight:600}
+.rnote.ok{color:var(--teal-ink)} .rnote.warn{color:#8A520A} .rnote.bad{color:var(--red)}
+.excard{border:1px solid var(--line);border-inline-start:4px solid var(--amber-2);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px}
+.exhd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.exhd h4{margin:0;font-size:15px;font-weight:800;display:flex;gap:6px;align-items:center}
+.excard dl{display:grid;grid-template-columns:minmax(90px,auto) 1fr;gap:6px 14px;margin:0;font-size:14px}
+.excard dt{color:var(--slate);font-size:13px}
+.excard dd{margin:0}
+.rk2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.rk2 h5,.tips h5{margin:0 0 8px;font-size:14px;color:var(--slate);font-weight:700;display:flex;gap:6px;align-items:center}
+.rkl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rkl li{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:var(--radius);font-size:14px}
+.rkl li.none{color:var(--slate)}
+.rkl .at{font-size:12.5px;color:var(--slate)}
+.rkl small{display:block;color:var(--slate);font-size:13px;margin-top:2px}
+.tips{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
+.tips ul{margin:0;padding-inline-start:20px;font-size:14px}
+.tips li{margin:4px 0}
+.opl{margin:0;padding-inline-start:20px;font-size:15px;display:flex;flex-direction:column;gap:8px}
+@media (max-width:980px){.rgrid2,.rk2{grid-template-columns:1fr}}
+
+/* sticky, compact card tray while mapping */
+html{scroll-padding-top:84px}
+html:has(.tray){scroll-padding-bottom:150px}
+.tray{position:sticky;bottom:0;z-index:20;box-shadow:0 -6px 18px rgba(8,9,40,.10);padding:10px 14px}
+.tray .tc{width:142px;min-height:54px;padding:8px 10px;font-size:13.5px}
+.tray .cards{min-height:54px;gap:10px}
+
+</style>
+</head>
+<body>
+<header class="top" id="hdr"></header>
+<main class="wrap" id="main"></main>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" aria-hidden="true"></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>const LOGO="data:image/png;base64,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";</script>
+<script>
+/* ===== THE 51-HOUR MYSTERY: single case dataset (simplified wording, v3) ===== */
+const DAY = {mon:{en:'Mon',ar:'الاثنين'},tue:{en:'Tue',ar:'الثلاثاء'},wed:{en:'Wed',ar:'الأربعاء'}};
+const tm = (d,t) => ({en:`${DAY[d].en} ${t}`, ar:`${DAY[d].ar} ${t}`});
+const same = s => ({en:s, ar:s});
+function dur(min, lg){const h=Math.floor(min/60),m=min%60; if(lg==='ar') return m? `${h} س ${String(m).padStart(2,'0')} د` : `${h} ساعة`; return m? `${h}h ${String(m).padStart(2,'0')}m` : `${h}h`;}
+
+/* Verified timeline (minutes from Monday 09:00). The facts are unchanged. */
+const TIMELINE = [
+  {d:'mon',t:'09:00',min:0,   who:'cs', en:'The customer sends the request. The required account reference is missing.', ar:'العميل يرسل الطلب، والرقم المرجعي المطلوب للحساب غير موجود.'},
+  {d:'mon',t:'09:20',min:20,  who:'cs', en:'Customer Service sends the request to Operations without the required intake check.', ar:'خدمة العملاء تحوّل الطلب إلى العمليات بدون فحص الاستلام المطلوب.'},
+  {d:'mon',t:'09:30',min:30,  who:'op', en:'The request enters the Operations queue.', ar:'الطلب يدخل Queue العمليات.'},
+  {d:'tue',t:'08:45',min:1425,who:'op', en:'Operations opens the request.', ar:'العمليات تفتح الطلب.'},
+  {d:'tue',t:'09:00',min:1440,who:'op', en:'Operations finds that the reference is missing.', ar:'العمليات تكتشف أن الرقم المرجعي ناقص.'},
+  {d:'tue',t:'09:05',min:1445,who:'op', en:'Operations sends the request back to Customer Service.', ar:'العمليات ترجع الطلب إلى خدمة العملاء.'},
+  {d:'tue',t:'09:20',min:1460,who:'cs', en:'Customer Service asks the customer for the reference.', ar:'خدمة العملاء تطلب الرقم المرجعي من العميل.'},
+  {d:'tue',t:'11:30',min:1590,who:'cu', en:'The customer sends the correct reference: 60814.', ar:'العميل يرسل الرقم الصحيح: 60814.'},
+  {d:'tue',t:'11:45',min:1605,who:'cs', en:'Customer Service types it wrongly as 60841.', ar:'خدمة العملاء تكتبه خطأ: 60841.'},
+  {d:'tue',t:'11:50',min:1610,who:'cs', en:'The updated request goes back to Operations.', ar:'الطلب المحدَّث يرجع إلى العمليات.'},
+  {d:'tue',t:'12:00',min:1620,who:'op', en:'Operations checks that the reference field is filled in, but does not compare it with the customer email.', ar:'العمليات تتأكد أن خانة الرقم المرجعي ممتلئة، لكن لا تقارنه ببريد العميل.'},
+  {d:'tue',t:'12:15',min:1635,who:'op', en:'Operations starts processing.', ar:'العمليات تبدأ التنفيذ.'},
+  {d:'tue',t:'13:45',min:1725,who:'op', en:'Processing is finished.', ar:'التنفيذ ينتهي.'},
+  {d:'tue',t:'14:00',min:1740,who:'qa', en:'Quality starts its check.', ar:'الجودة تبدأ المراجعة.'},
+  {d:'tue',t:'14:30',min:1770,who:'qa', en:'Quality rejects the request: the references do not match.', ar:'الجودة ترفض الطلب لأن الرقمين غير متطابقين.'},
+  {d:'tue',t:'14:35',min:1775,who:'op', en:'The request enters the Operations correction queue.', ar:'الطلب يدخل Queue التصحيح في العمليات.'},
+  {d:'wed',t:'09:40',min:2920,who:'op', en:'Operations opens the correction.', ar:'العمليات تفتح طلب التصحيح.'},
+  {d:'wed',t:'10:15',min:2955,who:'op', en:'Operations fixes the reference using the customer email.', ar:'العمليات تصحح الرقم بالرجوع إلى بريد العميل.'},
+  {d:'wed',t:'10:30',min:2970,who:'op', en:'The corrected request goes back to Quality.', ar:'الطلب المصحح يرجع إلى الجودة.'},
+  {d:'wed',t:'10:40',min:2980,who:'qa', en:'Quality starts the second check.', ar:'الجودة تبدأ المراجعة الثانية.'},
+  {d:'wed',t:'11:00',min:3000,who:'qa', en:'Quality approves the request.', ar:'الجودة توافق على الطلب.'},
+  {d:'wed',t:'12:00',min:3060,who:'cs', en:'Customer Service tells the customer the work is done.', ar:'خدمة العملاء تبلغ العميل بإنجاز الطلب.'}
+];
+const SLA_MIN = 24*60, TOTAL_MIN = 51*60;
+const SEGMENTS = [
+  {cat:'other',from:0,to:30},{cat:'q1',from:30,to:1425},{cat:'other',from:1425,to:1460},{cat:'cust',from:1460,to:1590},
+  {cat:'other',from:1590,to:1775},{cat:'q2',from:1775,to:2920},{cat:'other',from:2920,to:3060}
+];
+const CATS_TIME = {
+  q1:   {name:{en:'Waiting in the Operations queue',ar:'الانتظار في Queue العمليات'}, range:{en:'Mon 09:30 to Tue 08:45',ar:'من الاثنين 09:30 إلى الثلاثاء 08:45'}, color:'var(--amber)', hot:true},
+  q2:   {name:{en:'Waiting in the correction queue',ar:'الانتظار في Queue التصحيح'}, range:{en:'Tue 14:35 to Wed 09:40',ar:'من الثلاثاء 14:35 إلى الأربعاء 09:40'}, color:'#A9620B', hot:true},
+  cust: {name:{en:'Waiting for the customer',ar:'انتظار رد العميل'}, range:{en:'Tue 09:20 to 11:30',ar:'الثلاثاء من 09:20 إلى 11:30'}, color:'#8E97AD'},
+  other:{name:{en:'All other time',ar:'باقي الوقت'}, range:{en:'Handling, handoffs, processing, checks, confirmation',ar:'الاستلام والتسليم والتنفيذ والمراجعات والتأكيد'}, color:'var(--teal)'}
+};
+
+const DEPTS = ['cs','op','qa'];
+const DEPT = {
+  cs:{name:{en:'Customer Service',ar:'خدمة العملاء'}, person:{en:'Nadia Farouk',ar:'نادية فاروق'}, role:{en:'Customer Service Supervisor',ar:'مشرفة خدمة العملاء'}, init:{en:'NF',ar:'ن ف'}},
+  op:{name:{en:'Operations',ar:'العمليات'}, person:{en:'Karim Adel',ar:'كريم عادل'}, role:{en:'Operations Team Lead',ar:'قائد فريق العمليات'}, init:{en:'KA',ar:'ك ع'}},
+  qa:{name:{en:'Quality',ar:'الجودة'}, person:{en:'Rana Mostafa',ar:'رنا مصطفى'}, role:{en:'Quality Analyst',ar:'محللة الجودة'}, init:{en:'RM',ar:'ر م'}}
+};
+const BUDGET = 6, DEPT_MAX = 3;
+
+/* ===== Evidence records ===== */
+const DOCS = {
+  ticket:{code:'TKT-PS-4821', dept:'cs', title:{en:'Original Ticket',ar:'الـ Ticket الأصلية'},
+    meta:[
+      [{en:'Customer',ar:'العميل'},{en:'Major account',ar:'عميل رئيسي'}],
+      [{en:'Request',ar:'الطلب'},{en:'Update the billing contact on the account',ar:'تحديث جهة اتصال الفواتير في الحساب'}],
+      [{en:'Account reference (required)',ar:'الرقم المرجعي للحساب (مطلوب)'},{en:'Missing',ar:'غير موجود'}],
+      [{en:'Intake check',ar:'فحص الاستلام'},{en:'Not recorded',ar:'غير مسجَّل'}],
+      [{en:'Promised by',ar:'الموعد المتفق عليه'},{en:'Tue 09:00 (24 hours)',ar:'الثلاثاء 09:00 (خلال 24 ساعة)'}]
+    ],
+    rows:[[tm('mon','09:00'),{en:'Sent by customer',ar:'أرسله العميل'}],[tm('mon','09:20'),{en:'Sent to Operations',ar:'حُوِّل إلى العمليات'}],[tm('wed','12:00'),{en:'Closed: customer told the work is done',ar:'أُغلقت: تم إبلاغ العميل بالإنجاز'}]]},
+  sop:{code:'CS-SOP-07', dept:'cs', title:{en:'Intake Rules (SOP)',ar:'قواعد الاستلام (SOP)'},
+    intro:{en:'Before you send an account update to Operations, you must:',ar:'قبل تحويل أي طلب تحديث حساب إلى العمليات، يجب:'},
+    list:[
+      {en:'Check that all required fields are filled in, including the account reference.',ar:'التأكد من ملء كل الخانات المطلوبة، ومنها الرقم المرجعي للحساب.'},
+      {en:'Check the reference against the customer record or the customer email.',ar:'مطابقة الرقم المرجعي مع سجل العميل أو بريده.'},
+      {en:'If anything is missing, contact the customer first.',ar:'إذا كانت هناك معلومة ناقصة، التواصل مع العميل أولًا.'},
+      {en:"Mark the ticket 'Intake checked'.",ar:'كتابة «تم فحص الاستلام» على الـ Ticket.'}
+    ],
+    note:{en:'Do not send the request to Operations until all four steps are done.',ar:'لا يُحوَّل الطلب إلى العمليات قبل إتمام الخطوات الأربع.'}},
+  comm:{code:'COM-PS-4821', dept:'cs', title:{en:'Customer Messages',ar:'سجل الرسائل مع العميل'},
+    rows:[
+      [tm('tue','09:20'),{en:'To customer: "Please send your account reference."',ar:'إلى العميل: «من فضلكم أرسلوا الرقم المرجعي للحساب.»'}],
+      [tm('tue','11:30'),{en:'From customer: "Our account reference is 60814."',ar:'من العميل: «الرقم المرجعي لحسابنا هو 60814.»'}],
+      [tm('tue','11:45'),{en:'Ticket updated: account reference = 60841',ar:'تحديث الـ Ticket: الرقم المرجعي = 60841'}],
+      [tm('tue','11:50'),{en:'Ticket sent back to Operations',ar:'الـ Ticket رجعت إلى العمليات'}],
+      [tm('wed','12:00'),{en:'To customer: "Your request is complete."',ar:'إلى العميل: «تم إنجاز طلبكم.»'}]
+    ]},
+  queue:{code:'OPS-Q-IN', dept:'op', title:{en:'Operations Queue Log',ar:'سجل Queue العمليات'},
+    meta:[
+      [{en:'Entered queue',ar:'دخل الـ Queue'},tm('mon','09:30')],
+      [{en:'First opened',ar:'أول فتح'},tm('tue','08:45')],
+      [{en:'Time waiting',ar:'مدة الانتظار'},{en:'23h 15m',ar:'23 س 15 د'}],
+      [{en:'Promised by',ar:'الموعد المتفق عليه'},tm('tue','09:00')]
+    ]},
+  proc:{code:'OPS-PR-4821', dept:'op', title:{en:'Operations Work Record',ar:'سجل عمل العمليات'},
+    meta:[[{en:'Type of check',ar:'نوع الفحص'},{en:'System checks that required fields are filled in',ar:'النظام يتأكد أن الخانات المطلوبة ممتلئة'}]],
+    rows:[
+      [tm('tue','08:45'),{en:'Case opened',ar:'فُتحت الحالة'}],
+      [tm('tue','09:00'),{en:'Field check: account reference missing',ar:'فحص الخانات: الرقم المرجعي غير موجود'}],
+      [tm('tue','09:05'),{en:'Sent back to Customer Service: "Reference needed"',ar:'رجعت إلى خدمة العملاء: «الرقم المرجعي مطلوب»'}],
+      [tm('tue','11:50'),{en:'Updated ticket received',ar:'استلام الـ Ticket المحدَّثة'}],
+      [tm('tue','12:00'),{en:'Field check: reference field filled in. Result: pass',ar:'فحص الخانات: خانة الرقم ممتلئة. النتيجة: ناجح'}],
+      [tm('tue','12:15'),{en:'Processing started',ar:'بدأ التنفيذ'}],
+      [tm('tue','13:45'),{en:'Processing finished; sent to Quality',ar:'انتهى التنفيذ؛ أُرسلت إلى الجودة'}]
+    ]},
+  corr:{code:'OPS-Q-CR', dept:'op', title:{en:'Correction Queue Log',ar:'سجل Queue التصحيح'},
+    meta:[
+      [{en:'Reason',ar:'السبب'},{en:'Rejected by Quality: wrong reference',ar:'رفض من الجودة: رقم مرجعي خطأ'}],
+      [{en:'Entered queue',ar:'دخل الـ Queue'},tm('tue','14:35')],
+      [{en:'First opened',ar:'أول فتح'},tm('wed','09:40')],
+      [{en:'Time waiting',ar:'مدة الانتظار'},{en:'19h 05m',ar:'19 س 05 د'}]
+    ],
+    rows:[[tm('wed','10:15'),{en:'Reference fixed to 60814, using the customer email',ar:'تصحيح الرقم إلى 60814 بالرجوع إلى بريد العميل'}],[tm('wed','10:30'),{en:'Sent back to Quality',ar:'أُرسلت مرة أخرى إلى الجودة'}]]},
+  rej:{code:'QA-R1-4821', dept:'qa', title:{en:'Quality Rejection Record',ar:'سجل رفض الجودة'},
+    meta:[
+      [{en:'Check',ar:'المراجعة'},{en:'First check, started Tue 14:00',ar:'المراجعة الأولى، بدأت الثلاثاء 14:00'}],
+      [{en:'Decision',ar:'القرار'},{en:'Rejected (Tue 14:30)',ar:'مرفوض (الثلاثاء 14:30)'}],
+      [{en:'Reason',ar:'السبب'},{en:'Reference does not match the customer email',ar:'الرقم المرجعي لا يطابق بريد العميل'}],
+      [{en:'Reference on ticket',ar:'الرقم على الـ Ticket'},same('60841')],
+      [{en:'Reference in customer email',ar:'الرقم في بريد العميل'},same('60814')],
+      [{en:'Sent to',ar:'أُرسلت إلى'},{en:'Operations correction queue',ar:'Queue التصحيح في العمليات'}]
+    ]},
+  appr:{code:'QA-R2-4821', dept:'qa', title:{en:'Quality Approval Record',ar:'سجل موافقة الجودة'},
+    meta:[
+      [{en:'Check',ar:'المراجعة'},{en:'Second check, started Wed 10:40',ar:'المراجعة الثانية، بدأت الأربعاء 10:40'}],
+      [{en:'Reference on ticket',ar:'الرقم على الـ Ticket'},same('60814')],
+      [{en:'Reference in customer email',ar:'الرقم في بريد العميل'},same('60814')],
+      [{en:'Decision',ar:'القرار'},{en:'Approved (Wed 11:00)',ar:'موافقة (الأربعاء 11:00)'}],
+      [{en:'Sent to',ar:'أُرسلت إلى'},{en:'Customer Service, to tell the customer',ar:'خدمة العملاء لإبلاغ العميل'}]
+    ]}
+};
+
+/* ===== Question bank (same information value, plainer wording) ===== */
+const QUESTIONS = [
+  {id:'cs1',dept:'cs',doc:'ticket',
+   q:{en:'Can I see the request exactly as you received it?',ar:'هل يمكنني رؤية الطلب كما وصلكم بالضبط؟'},
+   a:{en:'Sure. Here is the ticket as it arrived on Monday morning. Please check the record yourself.',ar:'بالتأكيد. هذه الـ Ticket كما وصلت صباح الاثنين. الأفضل أن تراجع السجل بنفسك.'}},
+  {id:'cs2',dept:'cs',doc:'sop',
+   q:{en:'What are the rules for sending a request to Operations?',ar:'ما القواعد المطلوبة قبل تحويل الطلب إلى العمليات؟'},
+   a:{en:'Here is our intake procedure. The whole team is trained on it. Whether every step is followed on a busy day is a fair question.',ar:'هذا إجراء الاستلام (SOP) عندنا، وكل الفريق متدرب عليه. أما هل كل خطوة تُنفَّذ في يوم مزدحم، فهذا سؤال مهم.'}},
+  {id:'cs3',dept:'cs',doc:'comm',
+   q:{en:'Can I see your messages with the customer after the request came back?',ar:'هل يمكنني رؤية الرسائل مع العميل بعد رجوع الطلب إليكم؟'},
+   a:{en:'Yes. Operations sent the ticket back on Tuesday morning, and we contacted the customer right away. Here is the full record.',ar:'نعم. العمليات رجّعت الـ Ticket صباح الثلاثاء، وتواصلنا مع العميل فورًا. هذا السجل كاملًا.'}},
+  {id:'cs4',dept:'cs',doc:null,
+   q:{en:'How do you decide which requests to handle first?',ar:'كيف تحددون أي طلب تبدؤون به؟'},
+   a:{en:"Mostly first come, first served. Big customers should be flagged so they move faster, but someone adds the flag by hand. I can't confirm it was done for this ticket, and we don't keep a record of it.",ar:'غالبًا بالترتيب: من يصل أولًا يُخدم أولًا. المفروض أن طلبات كبار العملاء تُميَّز لتتحرك أسرع، لكن التمييز يتم يدويًا. لا أستطيع التأكيد إن كان تم مع هذه الـ Ticket، ولا نحتفظ بسجل لذلك.'},
+   ins:{en:'Requests are mostly handled in order of arrival. Big-customer flags are added by hand. Not confirmed for this case.',ar:'الطلبات تُعالَج غالبًا بترتيب الوصول، وتمييز كبار العملاء يدوي. غير مؤكَّد في هذه الحالة.'}},
+  {id:'cs5',dept:'cs',doc:null,
+   q:{en:'How would we know if incomplete requests happen often?',ar:'كيف نعرف إن كانت الطلبات الناقصة تتكرر كثيرًا؟'},
+   a:{en:"One ticket can't tell us that. We would need to check a few weeks of requests and count how many came back for missing information. Nobody has done that yet.",ar:'Ticket واحدة لا تكفي لنعرف. نحتاج مراجعة طلبات عدة أسابيع ونعدّ كم منها رجع بسبب معلومات ناقصة. لم يقم أحد بذلك حتى الآن.'},
+   ins:{en:"One case can't show a pattern. A larger sample of requests would be needed.",ar:'حالة واحدة لا تثبت نمطًا متكررًا؛ نحتاج عينة أكبر من الطلبات.'}},
+  {id:'op1',dept:'op',doc:'queue',
+   q:{en:'When did the request enter your queue, and when did work start?',ar:'متى دخل الطلب الـ Queue عندكم، ومتى بدأ العمل عليه؟'},
+   a:{en:'The queue system records the times automatically. Here is the log.',ar:'نظام الـ Queue يسجل الأوقات تلقائيًا. هذا هو السجل.'}},
+  {id:'op2',dept:'op',doc:'proc',
+   q:{en:'What checks and actions did your team record before processing?',ar:'ما الفحوصات والإجراءات التي سجلها فريقك قبل التنفيذ؟'},
+   a:{en:'Every action is logged. This record covers everything from opening the case to sending it to Quality.',ar:'كل إجراء مسجَّل. هذا السجل يغطي كل شيء من فتح الحالة حتى إرسالها إلى الجودة.'}},
+  {id:'op3',dept:'op',doc:'corr',
+   q:{en:'What happened after Quality rejected the request?',ar:'ماذا حدث بعد أن رفضت الجودة الطلب؟'},
+   a:{en:'Rejected requests go into our correction queue. Here is the log for this one.',ar:'الطلبات المرفوضة تدخل Queue التصحيح عندنا. هذا سجل هذا الطلب.'}},
+  {id:'op4',dept:'op',doc:null,
+   q:{en:'How do you decide which corrections to handle first?',ar:'كيف تحددون أي تصحيح تبدؤون به؟'},
+   a:{en:"Corrections wait in a separate queue and are usually handled in order of arrival. A team lead can move urgent ones up. I can't prove why this one waited so long. That would need staffing records, and we don't have them here.",ar:'التصحيحات تنتظر في Queue منفصلة، وتُعالَج عادةً بترتيب الوصول، ويمكن لقائد الفريق تقديم الحالات العاجلة. لا أستطيع إثبات سبب انتظار هذه الحالة كل هذا الوقت؛ هذا يحتاج سجلات توزيع الموظفين، وهي غير متاحة هنا.'},
+   ins:{en:"Corrections are handled in order of arrival unless a lead moves them up. The reason for this wait can't be proven with the records available.",ar:'التصحيحات تُعالَج بترتيب الوصول إلا إذا قدّمها قائد الفريق. سبب هذا الانتظار لا يمكن إثباته بالسجلات المتاحة.'}},
+  {id:'op5',dept:'op',doc:null,
+   q:{en:'What do you do when a request is missing required information?',ar:'ماذا تفعلون عندما يكون الطلب ناقصًا معلومة مطلوبة؟'},
+   a:{en:"We don't contact the customer ourselves. We send the ticket back to Customer Service with a note. They get the information and send the ticket back to us.",ar:'لا نتواصل مع العميل بأنفسنا. نرجّع الـ Ticket إلى خدمة العملاء مع ملاحظة، وهم يحصلون على المعلومة ويرجعونها لنا.'},
+   ins:{en:'Missing information goes back to Customer Service. They contact the customer, then return the ticket.',ar:'المعلومات الناقصة ترجع إلى خدمة العملاء؛ يتواصلون مع العميل ثم يرجعون الـ Ticket.'}},
+  {id:'qa1',dept:'qa',doc:'rej',
+   q:{en:'Can I see the reason for the first rejection?',ar:'هل يمكنني رؤية سبب الرفض الأول؟'},
+   a:{en:'Yes. Every rejection must have a written reason. Here is the record.',ar:'نعم. كل رفض لازم يكون له سبب مكتوب. هذا هو السجل.'}},
+  {id:'qa2',dept:'qa',doc:'appr',
+   q:{en:'Can I see the result and timing of the second check?',ar:'هل يمكنني رؤية نتيجة وتوقيت المراجعة الثانية؟'},
+   a:{en:'Here is the second check. You can compare it with the first one.',ar:'هذه المراجعة الثانية، ويمكنك مقارنتها بالأولى.'}},
+  {id:'qa3',dept:'qa',doc:null,
+   q:{en:'How does Quality check that information is correct?',ar:'كيف تتأكد الجودة أن المعلومات صحيحة؟'},
+   a:{en:"We don't just check that a field is filled in. We compare key values, like the account reference, with the customer's own email. If they don't match, we send the case back to Operations.",ar:'لا نكتفي بأن الخانة ممتلئة. نقارن القيم الأساسية، مثل الرقم المرجعي، ببريد العميل نفسه. وإذا لم تتطابق، نرجّع الحالة إلى العمليات.'},
+   ins:{en:"Quality compares key values with the customer's email, not just whether a field is filled in.",ar:'الجودة تقارن القيم الأساسية ببريد العميل، ولا تكتفي بأن الخانة ممتلئة.'}},
+  {id:'qa4',dept:'qa',doc:null,
+   q:{en:'Who owns the request after Quality rejects it?',ar:'مَن المسؤول عن الطلب بعد أن ترفضه الجودة؟'},
+   a:{en:"Operations. We send it back with the reason. Operations fixes it and returns it to us for another check. We don't fix cases ourselves, so our review stays independent.",ar:'العمليات. نرجّعه مع السبب، والعمليات تصححه وترجعه لنا لمراجعة أخرى. نحن لا نصحح بأنفسنا حتى تبقى مراجعتنا مستقلة.'},
+   ins:{en:'After a rejection, Operations fixes the request and sends it back to Quality.',ar:'بعد الرفض، العمليات تصحح الطلب وترجعه إلى الجودة.'}},
+  {id:'qa5',dept:'qa',doc:null,
+   q:{en:'Is there enough evidence to call this a repeated quality problem?',ar:'هل توجد أدلة كافية لنقول إنها مشكلة جودة متكررة؟'},
+   a:{en:'Not from this case alone. One rejection tells us what happened here, not how often it happens. We would need data from many more cases.',ar:'ليس من هذه الحالة وحدها. رفض واحد يوضح ما حدث هنا، لا عدد مرات حدوثه. نحتاج بيانات من حالات أكثر بكثير.'},
+   ins:{en:"One rejection doesn't prove a pattern. More cases would be needed.",ar:'رفض واحد لا يثبت نمطًا؛ نحتاج حالات أكثر.'}}
+];
+const QMAP = Object.fromEntries(QUESTIONS.map(q=>[q.id,q]));
+
+/* ===== Process cards: shorter names (IDs are internal only) ===== */
+const CARDS = {
+  A:{dept:'cs', title:{en:'Receive and forward request',ar:'استلام الطلب وتحويله'}, decision:{en:'Request complete?',ar:'الطلب مكتمل؟'},
+     happened:{en:'Mon 09:00: the request arrived without the reference. Mon 09:20: sent to Operations. The required intake check was not recorded.',ar:'الاثنين 09:00: وصل الطلب بدون الرقم المرجعي. الاثنين 09:20: حُوِّل إلى العمليات. فحص الاستلام المطلوب لم يُسجَّل.'}},
+  B:{dept:'op', title:{en:'Wait in Operations queue',ar:'الانتظار في Queue العمليات'}, decision:{en:'Ready to start?',ar:'جاهز للبدء؟'},
+     happened:{en:'In the queue from Monday 09:30 to Tuesday 08:45: 23h 15m. Nobody worked on it. The 24-hour promise ran out 15 minutes later.',ar:'في الـ Queue من الاثنين 09:30 حتى الثلاثاء 08:45: أي 23 ساعة و15 دقيقة بدون عمل. ومهلة الـ 24 ساعة انتهت بعدها بـ 15 دقيقة.'}},
+  C:{dept:'op', title:{en:'Check the reference',ar:'مراجعة الرقم المرجعي'}, decision:{en:'Reference present?',ar:'الرقم المرجعي موجود؟'},
+     happened:{en:'Tue 09:00: reference missing, so the request went back (No). Tue 12:00: the field was filled in, so it passed (Yes). But nobody compared the number with the customer email.',ar:'الثلاثاء 09:00: الرقم غير موجود، فرجع الطلب (لا). الثلاثاء 12:00: الخانة ممتلئة، فنجح الفحص (نعم). لكن لم يقارن أحد الرقم ببريد العميل.'}},
+  D:{dept:'cs', title:{en:'Get the missing reference',ar:'طلب الرقم المرجعي الناقص'}, decision:{en:'Reference received?',ar:'تم استلام الرقم؟'},
+     happened:{en:'Tue 09:20: customer contacted. 11:30: customer sent 60814. 11:45: typed into the ticket as 60841. 11:50: sent back to Operations.',ar:'الثلاثاء 09:20: التواصل مع العميل. 11:30: العميل أرسل 60814. 11:45: كُتب في الـ Ticket 60841. 11:50: رجع إلى العمليات.'}},
+  E:{dept:'op', title:{en:'Process the request',ar:'تنفيذ الطلب'}, decision:{en:'Processing done?',ar:'اكتمل التنفيذ؟'},
+     happened:{en:'Tue 12:15 to 13:45: processed with the reference on the ticket, which was wrong.',ar:'الثلاثاء من 12:15 إلى 13:45: نُفّذ بالرقم المكتوب في الـ Ticket، وكان خطأ.'}},
+  F:{dept:'qa', title:{en:'Quality check',ar:'مراجعة الجودة'}, decision:{en:'Quality approved?',ar:'الجودة وافقت؟'},
+     happened:{en:'First check, Tue 14:00 to 14:30: rejected because the numbers did not match (No). Second check, Wed 10:40 to 11:00: approved (Yes). This check worked: it caught the error.',ar:'المراجعة الأولى، الثلاثاء 14:00 إلى 14:30: رفض لأن الرقمين غير متطابقين (لا). المراجعة الثانية، الأربعاء 10:40 إلى 11:00: موافقة (نعم). هذا الفحص نجح لأنه اكتشف الخطأ.'}},
+  G:{dept:'op', title:{en:'Fix the rejected request',ar:'تصحيح الطلب المرفوض'}, decision:{en:'Fix complete?',ar:'اكتمل التصحيح؟'},
+     happened:{en:'Waited in the correction queue from Tuesday 14:35 to Wednesday 09:40: 19h 05m. Fixed at 10:15 using the customer email. Sent back to Quality at 10:30.',ar:'انتظر في Queue التصحيح من الثلاثاء 14:35 حتى الأربعاء 09:40: أي 19 ساعة و5 دقائق. صُحّح الساعة 10:15 من بريد العميل، ورجع إلى الجودة الساعة 10:30.'}},
+  H:{dept:'cs', title:{en:'Confirm to customer',ar:'تأكيد الإنجاز للعميل'}, decision:{en:'Customer told?',ar:'تم إبلاغ العميل؟'},
+     happened:{en:'Wed 12:00: the customer was told the work was done, 51 hours after the request.',ar:'الأربعاء 12:00: تم إبلاغ العميل بالإنجاز، بعد 51 ساعة من الطلب.'}}
+};
+const TRAY_ORDER = ['F','D','A','H','C','G','B','E'];
+
+/* ===== Validated reference model (unchanged) ===== */
+const REF = {
+  main:['A','B','C','E','F','H'],
+  loops:[
+    {id:'L1', trigger:'C', act:'D', back:['C'], equiv:['B']},
+    {id:'L2', trigger:'F', act:'G', back:['F'], discuss:['E']}
+  ]
+};
+const CARD_DOCS = {A:['ticket','sop'],B:['queue'],C:['proc'],D:['comm','proc'],E:['proc'],F:['rej','appr'],G:['corr'],H:['ticket','comm']};
+
+/* Why each exception path matters (shown on the result screen) */
+const LOOP_WHY = {
+  L1:{en:'This path exists because the reference was not checked at intake. It added a handoff back to Customer Service and a wait for the customer.',ar:'هذا المسار حدث لأن الرقم المرجعي لم يُفحص عند الاستلام، فأضاف تسليمًا (Handoff) جديدًا إلى خدمة العملاء وانتظارًا لرد العميل.'},
+  L2:{en:'This path exists because a wrong number passed the first check. The fix then waited 19h 05m in a queue before anyone started it.',ar:'هذا المسار حدث لأن رقمًا خطأ مرّ من الفحص الأول، ثم انتظر التصحيح 19 ساعة و5 دقائق في Queue قبل أن يبدأ أحد العمل عليه.'}
+};
+
+/* ===== Risk types (simpler names) ===== */
+const RCATS = {
+  delay:  {en:'Delay or bottleneck',ar:'تأخير أو اختناق (Bottleneck)'},
+  missing:{en:'Missing information',ar:'معلومات ناقصة'},
+  handoff:{en:'Handoff problem',ar:'مشكلة في التسليم بين الأقسام (Handoff)'},
+  rework: {en:'Rework or quality error',ar:'إعادة عمل أو خطأ جودة (Rework)'},
+  control:{en:'Weak or skipped check',ar:'فحص ضعيف أو متجاوَز (Control)'}
+};
+
+/* ===== Reference risks (unchanged logic, simpler wording) ===== */
+const REF_RISKS = [
+  {id:'R1',card:'A',cats:['control','handoff','missing'],strong:['ticket','sop'],partial:['op5'],confirm:'sop',w:7,
+   name:{en:'Incomplete handoff at intake',ar:'تسليم غير مكتمل عند الاستلام'},
+   text:{en:'Customer Service sent the request on without the required check, so the work came back.',ar:'خدمة العملاء حوّلت الطلب بدون الفحص المطلوب، فرجع العمل مرة أخرى.'}},
+  {id:'R2',card:'B',cats:['delay'],strong:['queue'],partial:[],confirm:'queue',w:10,
+   name:{en:'Long wait in the Operations queue',ar:'انتظار طويل في Queue العمليات'},
+   text:{en:'The request waited 23h 15m before anyone opened it. Almost all of the 24 hours were gone before work started.',ar:'الطلب انتظر 23 ساعة و15 دقيقة قبل أن يفتحه أحد، أي أن مهلة الـ 24 ساعة كادت تنتهي قبل بدء العمل.'}},
+  {id:'R3',card:'C',cats:['control','rework'],strong:['proc'],partial:['comm','rej','qa3'],confirm:'proc',w:8,
+   name:{en:'Weak reference check',ar:'فحص ضعيف للرقم المرجعي'},
+   text:{en:'Operations checked that the field was filled in, not that the number was right. The wrong number went into processing.',ar:'العمليات تأكدت أن الخانة ممتلئة، وليس أن الرقم صحيح، فدخل الرقم الخطأ إلى التنفيذ.'}},
+  {id:'R4',card:'D',cats:['rework','control','handoff'],strong:['comm','rej'],partial:['qa3','corr'],confirm:'comm',w:8,
+   name:{en:'Wrong reference typed in',ar:'إدخال رقم مرجعي خطأ'},
+   text:{en:'The customer sent 60814. The ticket said 60841. Quality rejected the work.',ar:'العميل أرسل 60814، والـ Ticket كُتب فيها 60841، فرفضت الجودة العمل.'}},
+  {id:'R5',card:'G',cats:['delay','rework'],strong:['corr'],partial:['op4','qa4'],confirm:'corr',w:9,
+   name:{en:'Long wait in the correction queue',ar:'انتظار طويل في Queue التصحيح'},
+   text:{en:'The rejected request waited 19h 05m before anyone started fixing it.',ar:'الطلب المرفوض انتظر 19 ساعة و5 دقائق قبل أن يبدأ أحد تصحيحه.'}}
+];
+const EXTRA_RISK = {id:'X1',card:'D',cats:['delay'],strong:['comm','proc'],partial:['op5'],confirm:'comm',w:3,
+   name:{en:'Waiting for the customer',ar:'انتظار رد العميل'},
+   text:{en:'The customer took 2h 10m to reply. A real dependency, but a small part of the 51 hours.',ar:'العميل أخذ ساعتين و10 دقائق للرد. اعتماد حقيقي، لكنه جزء صغير من الـ 51 ساعة.'}};
+
+const DOC_SHOWS = {
+  queue:{w:9,en:'It shows the request waited 23h 15m before anyone opened it.',ar:'يوضح أن الطلب انتظر 23 ساعة و15 دقيقة قبل أن يفتحه أحد.'},
+  corr: {w:8,en:'It shows the fix waited 19h 05m before work started.',ar:'يوضح أن التصحيح انتظر 19 ساعة و5 دقائق قبل بدء العمل.'},
+  proc: {w:8,en:'It shows Operations only checked that the field was filled in.',ar:'يوضح أن العمليات تأكدت فقط أن الخانة ممتلئة.'},
+  comm: {w:7,en:'It shows the customer sent 60814, but the ticket said 60841.',ar:'يوضح أن العميل أرسل 60814 بينما الـ Ticket فيها 60841.'},
+  rej:  {w:6,en:'It shows why Quality rejected the request.',ar:'يوضح سبب رفض الجودة للطلب.'},
+  ticket:{w:5,en:'It shows the reference was missing and no intake check was recorded.',ar:'يوضح أن الرقم كان ناقصًا وأن فحص الاستلام لم يُسجَّل.'},
+  sop:  {w:5,en:'It shows the check that was required before sending the request on.',ar:'يوضح الفحص الذي كان مطلوبًا قبل تحويل الطلب.'},
+  appr: {w:3,en:'It shows the corrected number and when Quality approved it.',ar:'يوضح الرقم المصحح ووقت موافقة الجودة.'}
+};
+
+const STR = {
+en:{
+  prog:'Managerial Momentum', topic:'Process Mapping & Gemba Walk',
+  nav:['Case','Evidence','Process map','Risks','Results'],
+  myEvidence:'My evidence', langLabel:'Language',
+  caseLabel:'CASE PS-4821', title:'The 51-Hour Mystery',
+  tagline:'Find the evidence. Rebuild the process. Spot the risks.',
+  statusLine:'Closed, under investigation',
+  memoFrom:'Message from the Head of Operations',
+  memo:['A major customer asked for a simple account update. We promised it in 24 hours. It took 51.','Each department tells a different story.','Find out what really happened. Use evidence, not opinions.'],
+  missed:'A customer request was 27 hours late.',
+  role:'You are the Operations Manager at PulseServe.',
+  fCommit:'Promised', fActual:'Actual time', fOver:'Late by',
+  fType:'Request', fTypeV:'Account update',
+  missionH:'Your task',
+  mission:'You have 6 questions. Use them to find out what happened. Then rebuild the real process and mark the biggest risks.',
+  rules:'Ask at least 1 question in each department, and no more than 3 in one department.',
+  objH:'Three steps', objs:['Investigate','Map the process','Spot the risks'],
+  gemba:'Go see. Ask why. Show respect.',
+  start:'Start the investigation',
+
+  s1t:'Find the evidence', s1i:'Pick a department. Choose a question. Click Ask.',
+  s1s:'Some questions give you a record. Others give you the employee\u2019s view. Both are saved for you.',
+  remaining:'Questions left', of:'of',
+  askedN:'{n} asked', maxN:'max 3', needOne:'Ask at least 1', maxed:'Limit reached',
+  qsFor:'Questions for {name}', askBtn:'Ask', askedLbl:'Asked. Click to read again (free)',
+  usesOne:'This uses 1 of your {n} questions.',
+  whyMax:"You've asked 3 questions here. That is the limit.",
+  whyReserve:'Save a question for {depts}. Each department needs at least one.',
+  whyNone:"You've used all 6 questions. Check your evidence, then build the map.",
+  pickFirst:'Choose a question first.',
+  ansEmpty:'Ask a question to hear from {name}.',
+  tagRecord:'Record found', tagInsight:'Employee view',
+  insNote:'Saved under Employee views. This is an opinion, not a record.',
+  recNote:'Saved to My evidence.', openRecord:'Open record',
+  toMap:'Build the process map', needDepts:'Ask at least one question in each department to continue.',
+  leftNote:'You have {n} question(s) left. You can continue now or keep asking.',
+  toastNew:'New evidence found', and:'and',
+
+  dTitle:'My evidence', dDocs:'Records', dIns:'Employee views',
+  noDocs:'No records yet. Questions that ask for a record add it here.',
+  noIns:'No employee views yet.',
+  insDisc:'What employees told you. Useful context, but not proof.',
+  back:'Back', close:'Close', verified:'Official record', time:'Time', entry:'Entry', caseL:'Case',
+
+  s2t:'Rebuild the process', st1:'Build the map', st2:'Review my map', st3:'Submit',
+  i1:'Build the main flow (6 steps). Then place the 2 exception steps and show where the work returns.',
+  i1s:'Click a card, then click a slot. Or drag it. To move a card, click it, then click another slot.',
+  mainLbl:'Main flow: the 6 steps every request goes through',
+  exLbl:'Exception steps (used only when something goes wrong)',
+  exHelp:'These two steps are not part of the normal flow. They happen only when a check fails or information is missing. For each one, choose:',
+  exHelpList:['Where the issue appears','Where the process returns after the issue is handled'],
+  exExample:'Example from another process (not this case): in a purchase order, if the price is wrong, the issue appears at \u201cApprove order\u201d. Purchasing fixes the price, and the process returns to \u201cPrepare order\u201d.',
+  exN:'Exception {n}', exSlot:'Drop an exception step here', noTrig:'Issue step not chosen yet',
+  rTrig:'1. At which main step does this issue appear?',
+  rBack:'2. After the issue is handled, which main step does the process return to?',
+  chooseTrig:'Select the step where the issue appears', chooseBack:'Select the step the process returns to',
+  pathRead:'Your path: if \u201c{a}\u201d fails \u2192 {b} \u2192 back to \u201c{c}\u201d',
+  pathOpen:'Choose both steps to complete this path.',
+  laneStale:'A step you chose is no longer in the main flow. Please choose again.',
+  ownerLbl:'Owner (your choice)', ownerNone:'Owner not chosen', deptChoose:'Choose…',
+  inMain:'Main flow, position {n}', moveHint:'Click any slot to move this card there, or click another card to swap them.', done:'Done',
+  startN:'Start', endN:'End', placeHere:'Place a step here', placeArmed:'Now click a card',
+  tray:'Cards to place', trayDone:'All 8 cards are placed. You can still move or swap any card.',
+  trayFull:'All slots are full. Move a card back to the tray first, or swap two cards.',
+  undo:'Undo', reset:'Start over', resetQ:'Clear the whole map?', resetYes:'Clear map', cancel:'Cancel',
+  earlier:'Move left', later:'Move right', toTray:'Back to tray',
+  progress:'Placed: {a} of 6 main steps and {b} of 2 exception steps.',
+  reviewBtn:'Review my map', reviewT:'Review my map',
+  reviewS:'This is your map as you built it. Nothing is checked yet. You will see the correct process after the risks step.',
+  chkT:'Is your map complete?', chMain:'Main flow steps', chEx:'Exception steps', chTrig:'Issue steps chosen', chBack:'Return steps chosen', chOwn:'Owners chosen',
+  chNote:'This only checks that your map is complete, not that it is correct.',
+  backEdit:'Back to editing', submit:'Submit my map', emptyView:'Empty',
+  incQ:'{n} item(s) are not finished. Submit anyway?', subAny:'Submit anyway', keep:'Keep editing',
+  yes:'Yes', no:'No', how:'How it works',
+  howT:'Example (not this case): making tea.', howMain:['Boil water','Brew','Serve'], howRet:'Strong enough? No: brew longer, then back to Brew',
+  howEnd:'You choose the logic. The map draws the arrows.',
+
+  s3t:'Spot the risks', i3:'Where could this process cause delay, errors, or repeated work? Mark 3 risks.',
+  f3:['Click a step','Choose the risk type','Link your evidence'],
+  rCount:'Risks marked', aim:'Aim for 3',
+  pickP:'Click a step on the map to mark a risk there.',
+  loc:'Step', rType:'Risk type', link:'Your evidence', recs:'Records', inss:'Employee views',
+  noEv:'You have no evidence for this yet. You can mark it as "Not sure yet".',
+  verify:'Not sure yet: needs checking', verifyH:'Use this when the concern makes sense, but you have no record to prove it.',
+  save:'Save risk', update:'Update risk', edit:'Edit', remove:'Remove',
+  dup:'You already marked this risk type at this step.',
+  chooseCat:'Choose a risk type first.',
+  yourRisks:'Your risks', noRisks:'No risks marked yet.', noLinked:'No evidence linked',
+  reveal:'See the results', fewQ:'You marked {n} of 3 risks. See the results now?', keepLook:'Keep looking', toMapBack:'Back to the map',
+
+  s4t:'Where did the 51 hours go?', s4s:'Here is what really happened, and how your map compares.',
+  committed:'Promised', actual:'Actual', overrun:'Late by',
+  bd:'Where the time went', total:'Total', sla:'24h promise',
+  rev:'The two Operations queues alone took 42h 20m of the 51 hours.',
+  revC:'Most of the time was waiting, not working. This is true for this case; one case does not prove a pattern.',
+  slaFact:'The 24-hour promise ran out on Tuesday at 09:00, the same minute Operations found the reference was missing.',
+  mapS:'The correct process', myMap:'My map', act:'Correct process', clickHint:'Click any step to see what happened there.',
+  what:'What happened', riskAt:'Risk at this step', evid:'Evidence', found:'You found this', notFound:'You did not find this',
+  refType:'Risk type',
+  skip:'Not a step: the intake check. The rules (SOP) required it, but it was never done, so it is not part of the real process.',
+  fPos:'Wrong place', should:'Correct owner: {d}',
+
+  mrT:'Main flow review', mrSum:'{n} of 6 steps in the right place.',
+  mrCorrect:'Correct step', mrYours:'Your map',
+  mst:{ok:'Right place',moved:'Wrong position',asex:'Placed as an exception',missing:'Not in your map'},
+  mrExtra:'{c} is in your main flow, but it is an exception step. It only happens when a check fails.',
+  ownOk:'Owners: all correct.', ownDiff:'Owners: {n} different from the evidence.',
+  erT:'Exception path review', erCorrect:'Correct path', erYours:'Your path', erWhy:'Why it matters',
+  correctPath:'If \u201c{a}\u201d fails \u2192 {b} \u2192 back to \u201c{c}\u201d',
+  lst:{ok:'Correct',equiv:'Acceptable',discuss:'Needs discussion',partial:'Different issue or return step',incomplete:'Not finished',missing:'Not on your map',inmain:'Placed in the main flow'},
+  lnote:{equiv:'Returning through the Operations queue is a fair reading: the ticket did go back to Operations.',discuss:'The records show the fixed request went straight back to Quality, not through processing again.',inmain:'You placed this step in the main flow, so it has no return path.',missing:'You did not place this step as an exception.',incomplete:'You placed the step but did not choose both the issue step and the return step.'},
+  rkT:'Key risks', rkMine:'Risks you marked', rkMissed:'Key risks you missed', rkNone:'You did not mark any risks.', rkAll:'You found all five key risks.',
+  rkDocs:'Records that would have helped',
+  st:{supported:'Backed by evidence',partial:'Partly backed',verify:'Good concern, not yet proven',unsupported:'Good concern, no evidence linked',discuss:'Needs discussion'},
+  stWhy:{supported:'You linked the record that proves it.',partial:'You linked an employee view or an indirect record. {doc} proves it.',verify:'You marked it as not sure yet. {doc} proves it.',unsupported:'No evidence linked. {doc} proves it.'},
+  opT:'What this means operationally',
+  opPts:['Waiting, not working, used most of the time: 42h 20m in two queues.','Two checks failed in different ways. One found missing data. One let wrong data pass.','Every handoff between departments added time and a chance of error.','The customer\u2019s 2h 10m reply time was a small part of the delay.'],
+  close1:'You cannot improve a process you do not truly understand.',
+  close2:['First, observe the work.','Then, map the reality.','Finally, identify the risks.'],
+  restart:'Restart the activity', restartQ:'Start again from the beginning? Your answers will be cleared.', restartYes:'Restart'
+},
+ar:{
+  prog:'Managerial Momentum', topic:'Process Mapping وجولة Gemba',
+  nav:['القضية','الأدلة (Evidence)','الـ Process Map','المخاطر (Risks)','النتائج'],
+  myEvidence:'أدلتي', langLabel:'اللغة',
+  caseLabel:'القضية PS-4821', title:'لغز الـ 51 ساعة',
+  tagline:'اجمع الأدلة، أعد بناء العملية، واكتشف المخاطر.',
+  statusLine:'مغلقة، وقيد التحقيق',
+  memoFrom:'رسالة من رئيس العمليات',
+  memo:['عميل كبير طلب تحديثًا بسيطًا لحسابه، ووعدناه بالتنفيذ خلال 24 ساعة. لكنه أخذ 51 ساعة.','كل قسم يحكي القصة بطريقة مختلفة.','أريد أن أعرف ما حدث فعلًا، بالأدلة وليس بالآراء.'],
+  missed:'طلب عميل تأخر 27 ساعة.',
+  role:'أنت مدير العمليات في PulseServe.',
+  fCommit:'الموعد المتفق عليه', fActual:'الوقت الفعلي', fOver:'التأخير',
+  fType:'الطلب', fTypeV:'تحديث حساب',
+  missionH:'مهمتك',
+  mission:'معك 6 أسئلة. استخدمها لتعرف ما حدث. بعدها أعد بناء العملية الحقيقية، وحدد أكبر المخاطر.',
+  rules:'لازم تسأل سؤالًا واحدًا على الأقل في كل قسم، وبحد أقصى 3 أسئلة في القسم الواحد.',
+  objH:'ثلاث خطوات', objs:['تحقّق','ارسم الـ Process','حدد الـ Risks'],
+  gemba:'اذهب وشاهد. اسأل لماذا. احترم الناس.',
+  start:'ابدأ التحقيق',
+
+  s1t:'اجمع الأدلة', s1i:'اختر قسمًا، ثم اختر سؤالًا، واضغط «اسأل».',
+  s1s:'بعض الأسئلة تعطيك سجلًا رسميًا، وبعضها يعطيك رأي الموظف. الاثنان يُحفظان لك.',
+  remaining:'الأسئلة المتبقية', of:'من',
+  askedN:'سألت {n}', maxN:'الحد 3', needOne:'اسأل سؤالًا واحدًا على الأقل', maxed:'وصلت للحد',
+  qsFor:'أسئلة إلى {name}', askBtn:'اسأل', askedLbl:'تم السؤال. اضغط لقراءة الإجابة مرة أخرى (مجانًا)',
+  usesOne:'هذا السؤال يستهلك سؤالًا من أسئلتك الـ {n}.',
+  whyMax:'سألت 3 أسئلة في هذا القسم، وهذا هو الحد.',
+  whyReserve:'احتفظ بسؤال لقسم {depts}؛ كل قسم يحتاج سؤالًا واحدًا على الأقل.',
+  whyNone:'استخدمت الأسئلة الستة. راجع أدلتك، ثم ابدأ رسم الخريطة.',
+  pickFirst:'اختر سؤالًا أولًا.',
+  ansEmpty:'اسأل سؤالًا لتسمع من {name}.',
+  tagRecord:'تم العثور على سجل', tagInsight:'رأي الموظف',
+  insNote:'حُفظ في «آراء الموظفين». هذا رأي، وليس سجلًا رسميًا.',
+  recNote:'حُفظ في «أدلتي».', openRecord:'افتح السجل',
+  toMap:'ابدأ رسم الـ Process Map', needDepts:'اسأل سؤالًا واحدًا على الأقل في كل قسم حتى تستطيع المتابعة.',
+  leftNote:'ما زال معك {n} من الأسئلة. يمكنك المتابعة الآن أو مواصلة الأسئلة.',
+  toastNew:'دليل جديد', and:'و',
+
+  dTitle:'أدلتي', dDocs:'السجلات', dIns:'آراء الموظفين',
+  noDocs:'لا توجد سجلات بعد. الأسئلة التي تطلب سجلًا تضيفه هنا.',
+  noIns:'لا توجد آراء بعد.',
+  insDisc:'ما قاله الموظفون: سياق مفيد، لكنه ليس دليلًا قاطعًا.',
+  back:'رجوع', close:'إغلاق', verified:'سجل رسمي', time:'الوقت', entry:'التفاصيل', caseL:'القضية',
+
+  s2t:'أعد بناء العملية', st1:'ابنِ الخريطة', st2:'راجع خريطتك', st3:'أرسل',
+  i1:'ابنِ الـ Main Flow من 6 Steps، ثم ضع خطوتَي الاستثناء، ووضّح إلى أين يرجع العمل.',
+  i1s:'اضغط على بطاقة ثم على خانة، أو اسحبها. لنقل بطاقة: اضغط عليها، ثم على خانة أخرى.',
+  mainLbl:'الـ Main Flow: الـ 6 Steps التي يمر بها كل طلب',
+  exLbl:'مسارات الاستثناء (Exception Paths): لا تُستخدم إلا عند حدوث مشكلة',
+  exHelp:'هاتان الخطوتان ليستا جزءًا من الـ Main Flow العادي، ولا تحدثان إلا عندما يفشل فحص أو تكون هناك معلومة ناقصة. لكل خطوة، حدد:',
+  exHelpList:['في أي Step تظهر المشكلة','بعد حل المشكلة، العملية ترجع لأي Step'],
+  exExample:'مثال من عملية أخرى (ليس من هذه القضية): في أمر شراء، إذا كان السعر خطأ تظهر المشكلة عند «اعتماد الأمر». المشتريات تصحح السعر، ثم ترجع العملية إلى «إعداد الأمر».',
+  exN:'الاستثناء {n}', exSlot:'ضع خطوة الاستثناء هنا', noTrig:'لم تحدد Step المشكلة بعد',
+  rTrig:'1. في أي Step تظهر المشكلة؟',
+  rBack:'2. بعد حل المشكلة، العملية ترجع لأي Step؟',
+  chooseTrig:'اختر الـ Step التي تظهر فيها المشكلة', chooseBack:'اختر الـ Step التي ترجع إليها العملية',
+  pathRead:'مسارك: إذا فشلت «{a}» ← {b} ← الرجوع إلى «{c}»',
+  pathOpen:'اختر الـ Step في السؤالين لإكمال هذا المسار.',
+  laneStale:'Step اخترتها لم تعد في الـ Main Flow. من فضلك اختر مرة أخرى.',
+  ownerLbl:'القسم المسؤول (اختيارك)', ownerNone:'لم تحدد القسم', deptChoose:'اختر…',
+  inMain:'الـ Main Flow، الموضع {n}', moveHint:'اضغط على أي خانة لنقل البطاقة إليها، أو على بطاقة أخرى لتبديل مكانهما.', done:'تم',
+  startN:'البداية', endN:'النهاية', placeHere:'ضع Step هنا', placeArmed:'اضغط الآن على بطاقة',
+  tray:'بطاقات لم توضع بعد', trayDone:'وُضعت البطاقات الثماني. ما زال بإمكانك نقل أو تبديل أي بطاقة.',
+  trayFull:'كل الخانات ممتلئة. أرجع بطاقة أولًا، أو بدّل مكان بطاقتين.',
+  undo:'تراجع', reset:'ابدأ من جديد', resetQ:'هل تريد مسح الخريطة كلها؟', resetYes:'امسح الخريطة', cancel:'إلغاء',
+  earlier:'انقل لليمين', later:'انقل لليسار', toTray:'أرجعها للبطاقات',
+  progress:'تم وضع {a} من 6 Steps في الـ Main Flow، و{b} من خطوتَي الاستثناء.',
+  reviewBtn:'راجع خريطتك', reviewT:'راجع خريطتك',
+  reviewS:'هذه خريطتك كما بنيتها. لم يتم تقييم أي شيء بعد، وستعرف العملية الصحيحة بعد خطوة الـ Risks.',
+  chkT:'هل خريطتك مكتملة؟', chMain:'Steps الـ Main Flow', chEx:'خطوات الاستثناء', chTrig:'Steps ظهور المشكلة', chBack:'Steps الرجوع', chOwn:'الأقسام المسؤولة',
+  chNote:'هذا يتحقق فقط من اكتمال الخريطة، وليس من صحتها.',
+  backEdit:'ارجع للتعديل', submit:'أرسل خريطتي', emptyView:'فارغة',
+  incQ:'هناك {n} من العناصر غير مكتملة. هل تريد الإرسال كما هي؟', subAny:'أرسل كما هي', keep:'واصل التعديل',
+  yes:'نعم', no:'لا', how:'كيف تعمل؟',
+  howT:'مثال (ليس من هذه القضية): إعداد الشاي.', howMain:['غلي الماء','التخمير','التقديم'], howRet:'هل هو قوي بما يكفي؟ لا: اتركه يتخمر أكثر، ثم ارجع إلى التخمير',
+  howEnd:'أنت تحدد المنطق، والخريطة ترسم الأسهم.',
+
+  s3t:'اكتشف المخاطر (Risks)', i3:'أين يمكن أن تسبب هذه العملية تأخيرًا أو أخطاء أو إعادة عمل (Rework)؟ حدد 3 مخاطر.',
+  f3:['اضغط على Step','اختر نوع الـ Risk','اربطه بالدليل'],
+  rCount:'المخاطر المحددة', aim:'الهدف: 3',
+  pickP:'اضغط على Step في الخريطة لتحديد خطر عندها.',
+  loc:'الـ Step', rType:'نوع الـ Risk', link:'الدليل (Evidence)', recs:'السجلات', inss:'آراء الموظفين',
+  noEv:'لا يوجد معك دليل لهذا بعد. يمكنك اختيار «غير متأكد بعد».',
+  verify:'غير متأكد بعد: يحتاج تحقق', verifyH:'استخدمه عندما يكون القلق منطقيًا، لكن لا يوجد سجل يثبته.',
+  save:'احفظ الـ Risk', update:'حدّث الـ Risk', edit:'تعديل', remove:'حذف',
+  dup:'سبق أن حددت نفس نوع الـ Risk عند هذه الـ Step.',
+  chooseCat:'اختر نوع الـ Risk أولًا.',
+  yourRisks:'المخاطر التي حددتها', noRisks:'لم تحدد أي Risk بعد.', noLinked:'بدون دليل',
+  reveal:'اعرض النتائج', fewQ:'حددت {n} من 3 مخاطر. هل تريد عرض النتائج الآن؟', keepLook:'واصل البحث', toMapBack:'ارجع للخريطة',
+
+  s4t:'أين ذهبت الـ 51 ساعة؟', s4s:'هذا ما حدث فعلًا، وهذه مقارنة بخريطتك.',
+  committed:'الموعد المتفق عليه', actual:'الوقت الفعلي', overrun:'التأخير',
+  bd:'أين ذهب الوقت', total:'الإجمالي', sla:'موعد الـ 24 ساعة',
+  rev:'الانتظار في Queue العمليات وQueue التصحيح وحدهما أخذ 42 ساعة و20 دقيقة من الـ 51 ساعة.',
+  revC:'معظم الوقت كان انتظارًا وليس عملًا. هذا صحيح في هذه الحالة، لكن حالة واحدة لا تثبت نمطًا متكررًا.',
+  slaFact:'انتهت مهلة الـ 24 ساعة يوم الثلاثاء 09:00، في نفس الدقيقة التي اكتشفت فيها العمليات أن الرقم المرجعي ناقص.',
+  mapS:'العملية الصحيحة', myMap:'خريطتي', act:'العملية الصحيحة', clickHint:'اضغط على أي Step لترى ما حدث عندها.',
+  what:'ما الذي حدث', riskAt:'الـ Risk عند هذه الـ Step', evid:'الدليل', found:'وجدته', notFound:'لم تجده',
+  refType:'نوع الـ Risk',
+  skip:'ليست Step: فحص الاستلام. القواعد (SOP) كانت تطلبه، لكنه لم يتم أصلًا، لذلك ليس جزءًا من العملية الحقيقية.',
+  fPos:'مكان خطأ', should:'القسم الصحيح: {d}',
+
+  mrT:'مراجعة الـ Main Flow', mrSum:'{n} من 6 Steps في مكانها الصحيح.',
+  mrCorrect:'الـ Step الصحيحة', mrYours:'في خريطتك',
+  mst:{ok:'مكانها صحيح',moved:'موضعها مختلف',asex:'وضعتها كاستثناء',missing:'غير موجودة في خريطتك'},
+  mrExtra:'وضعت {c} في الـ Main Flow، لكنها خطوة استثناء لا تحدث إلا عند فشل فحص.',
+  ownOk:'الأقسام المسؤولة: كلها صحيحة.', ownDiff:'الأقسام المسؤولة: {n} مختلفة عن الأدلة.',
+  erT:'مراجعة مسارات الاستثناء (Exception Paths)', erCorrect:'المسار الصحيح', erYours:'مسارك', erWhy:'لماذا يهم؟',
+  correctPath:'إذا فشلت «{a}» ← {b} ← الرجوع إلى «{c}»',
+  lst:{ok:'صحيح',equiv:'مقبول',discuss:'يحتاج نقاش',partial:'Step المشكلة أو الرجوع مختلفة',incomplete:'غير مكتمل',missing:'غير موجود في خريطتك',inmain:'وضعته في الـ Main Flow'},
+  lnote:{equiv:'الرجوع عبر Queue العمليات قراءة مقبولة، لأن الـ Ticket رجعت فعلًا إلى العمليات.',discuss:'السجلات توضح أن الطلب المصحح رجع مباشرة إلى الجودة، بدون إعادة تنفيذ.',inmain:'وضعت هذه الخطوة في الـ Main Flow، لذلك لا يوجد لها مسار رجوع.',missing:'لم تضع هذه الخطوة كاستثناء.',incomplete:'وضعت الخطوة، لكن لم تحدد Step المشكلة وStep الرجوع معًا.'},
+  rkT:'أهم المخاطر (Key Risks)', rkMine:'المخاطر التي حددتها', rkMissed:'مخاطر مهمة فاتتك', rkNone:'لم تحدد أي Risk.', rkAll:'وجدت المخاطر الخمسة الأساسية كلها.',
+  rkDocs:'سجلات كانت ستساعدك',
+  st:{supported:'مدعوم بالأدلة',partial:'مدعوم جزئيًا',verify:'قلق منطقي، لم يُثبت بعد',unsupported:'قلق منطقي، بدون دليل',discuss:'يحتاج نقاش'},
+  stWhy:{supported:'ربطته بالسجل الذي يثبته.',partial:'ربطته برأي موظف أو سجل غير مباشر. {doc} هو الذي يثبته.',verify:'اخترت «غير متأكد بعد». {doc} هو الذي يثبته.',unsupported:'لم تربط دليلًا. {doc} هو الذي يثبته.'},
+  opT:'ماذا يعني هذا في التشغيل؟',
+  opPts:['الانتظار، وليس العمل، أخذ معظم الوقت: 42 ساعة و20 دقيقة في Queue العمليات وQueue التصحيح.','فحصان فشلا بطريقتين مختلفتين: فحص اكتشف معلومة ناقصة، وفحص سمح لمعلومة خطأ بالمرور.','كل تسليم (Handoff) بين الأقسام أضاف وقتًا وفرصة للخطأ.','رد العميل الذي أخذ ساعتين و10 دقائق كان جزءًا صغيرًا من التأخير.'],
+  close1:'لا يمكنك تحسين عملية لا تفهمها فعلًا.',
+  close2:['أولًا: شاهد العمل.','ثانيًا: ارسم الواقع.','أخيرًا: حدد المخاطر.'],
+  restart:'أعد بدء النشاط', restartQ:'هل تريد البدء من جديد؟ ستُمسح كل إجاباتك.', restartYes:'ابدأ من جديد'
+}};
+
+/* ===================== core helpers ===================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tx = o => (o && typeof o==='object' && 'en' in o) ? o[state.lang] : o;
+function t(k, v){ let s = STR[state.lang][k]; if(s===undefined) s = STR.en[k]; if(s===undefined) return k; if(v && typeof s==='string') for(const x in v) s = s.split('{'+x+'}').join(v[x]); return s; }
+const LG = () => state.lang;
+const joinL = (arr, lg) => lg==='ar' ? arr.join('، ') : arr.join(', ');
+const qn = (s, lg) => lg==='ar' ? `«${s}»` : `“${s}”`;
+const cn = (id, lg=LG()) => CARDS[id].title[lg];
+const dn = (d, lg=LG()) => DEPT[d].name[lg];
+const docn = (id, lg=LG()) => DOCS[id].title[lg];
+const catn = (c, lg=LG()) => RCATS[c][lg];
+const evName = (e, lg=LG()) => DOCS[e] ? DOCS[e].title[lg] : (lg==='ar'?'تفسير من ':'Explanation from ') + DEPT[QMAP[e].dept].person[lg];
+const cm = () => LG()==='ar' ? '، ' : ', ';
+const bi = f => ({en:f('en'), ar:f('ar')});
+
+const ICONS = {
+  doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  alert:'<path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.5v.5"/>',
+  folder:'<path d="M3 6h7l2 2h9v11H3z"/>',
+  undo:'<path d="M8 8H4V4"/><path d="M4.5 8.5A8 8 0 1 1 6 17"/>',
+  reset:'<path d="M5 6h14M9 6V4h6v2M7 6l1 14h8l1-14"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  left:'<path d="M15 5l-7 7 7 7"/>', right:'<path d="M9 5l7 7-7 7"/>',
+  flag:'<path d="M5 21V4h11l-2 4 2 4H5"/>',
+  search:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
+  info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8v.5"/>',
+  ret:'<path d="M9 14l-4-4 4-4"/><path d="M5 10h9a5 5 0 0 1 0 10h-2"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  user:'<circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/>',
+  lock:'<rect x="5" y="11" width="14" height="9"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'
+};
+const ico = (n, cls='') => `<svg class="ico ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
+
+/* ===================== state ===================== */
+const KEY = 'ps4821-state-v2';
+const fresh = () => ({
+  lang:'en', stage:0, maxStage:0,
+  dept:'cs', selQ:null, viewQ:null, asked:[],
+  map:{main:[null,null,null,null,null,null], dept:{}, conf:{}, ret:[{trigger:null,act:null,back:null},{trigger:null,act:null,back:null}], view:'edit', submitted:false},
+  sel:null, armed:null, undo:[], how:false, confirm:null, note:null,
+  risks:[], draft:null, rseq:1,
+  revealed:false, rview:'actual', rcard:'B', details:false, animDone:false,
+  drawer:{open:false, tab:'docs', doc:null}
+});
+let state;
+try { const s = sessionStorage.getItem(KEY); state = s ? Object.assign(fresh(), JSON.parse(s)) : fresh(); } catch(e){ state = fresh(); }
+function save(){ try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+
+const unlockedDocs = () => state.asked.map(id=>QMAP[id].doc).filter(Boolean);
+const insights = () => state.asked.filter(id=>!QMAP[id].doc);
+const countIn = d => state.asked.filter(id=>QMAP[id].dept===d).length;
+const remaining = () => BUDGET - state.asked.length;
+function canAsk(d){
+  const rem = remaining();
+  if(rem<=0) return {ok:false, why:'none'};
+  if(countIn(d)>=DEPT_MAX) return {ok:false, why:'max'};
+  const need = DEPTS.filter(x=>x!==d && countIn(x)===0);
+  if(rem-1 < need.length) return {ok:false, why:'reserve', need};
+  return {ok:true};
+}
+const allDeptsCovered = () => DEPTS.every(d=>countIn(d)>=1);
+
+/* ===================== header ===================== */
+function headerHTML(){
+  const names = t('nav');
+  const navAllowed = i => !state.revealed ? i<=state.maxStage : i===4;
+  const items = names.map((n,i)=>{
+    const cls = i===state.stage ? 'cur' : (i<state.maxStage || state.revealed ? 'done' : '');
+    return `<li><button class="${cls}" data-act="nav" data-i="${i}" ${navAllowed(i)&&i!==state.stage?'':'disabled'} ${i===state.stage?'aria-current="step"':''}><span class="n">${cls==='done'?ico('check','s'):i+1}</span><span class="lb">${n}</span></button></li>`;
+  }).join('');
+  const nEv = unlockedDocs().length + insights().length;
+  return `<div class="brand"><img src="${LOGO}" alt="Skills Bank"><div class="prog"><b>${t('prog')}</b>${t('topic')}</div></div>
+  <nav class="navw" aria-label="Stages"><ol class="nav">${items}</ol></nav>
+  <div class="tools">
+    ${state.stage>0?`<button class="evbtn" id="evbtn" data-act="drawer">${ico('folder')}<span>${t('myEvidence')}</span><span class="cnt">${nEv}</span></button>`:''}
+    <div class="lang" role="group" aria-label="${t('langLabel')}"><button data-act="lang" data-v="en" aria-pressed="${state.lang==='en'}">EN</button><button data-act="lang" data-v="ar" aria-pressed="${state.lang==='ar'}">AR</button></div>
+  </div>`;
+}
+
+/* ===================== welcome ===================== */
+function welcomeHTML(){
+  const lg = LG();
+  return `<section class="welcome">
+  <div class="cover">
+    <div class="case">${t('caseLabel')}</div>
+    <h1>${t('title')}</h1>
+    <p class="tag">${t('tagline')}</p>
+    <div class="status"><i></i>${t('statusLine')}</div>
+    <div class="memo"><b>${t('memoFrom')}</b>${t('memo').map(p=>`<p>${p}</p>`).join('')}</div>
+  </div>
+  <div class="brief">
+    <div><h2>${t('missed')}</h2><p class="sub" style="margin:6px 0 0;color:var(--slate)">${t('role')}</p></div>
+    <div class="facts">
+      <div class="fact"><div class="v">${dur(1440,lg)}</div><div class="k">${t('fCommit')}</div></div>
+      <div class="fact"><div class="v">${dur(3060,lg)}</div><div class="k">${t('fActual')}</div></div>
+      <div class="fact over"><div class="v">${dur(1620,lg)}</div><div class="k">${t('fOver')}</div></div>
+    </div>
+    <dl class="meta2"><dt>${t('fType')}</dt><dd>${t('fTypeV')}</dd></dl>
+    <div class="mission"><h3>${t('missionH')}</h3><p>${t('mission')}</p><p style="color:var(--slate);font-size:14px">${t('rules')}</p></div>
+    <div class="objs"><h3>${t('objH')}</h3><ol>${t('objs').map((o,i)=>`<li><span class="n">${i+1}</span>${o}</li>`).join('')}</ol></div>
+    <div><button class="btn btn-p btn-lg" data-act="start">${t('start')}</button></div>
+    <div class="gemba">${t('gemba')}</div>
+  </div></section>`;
+}
+
+/* ===================== stage 1: investigation ===================== */
+function s1HTML(){
+  const lg = LG(), d = state.dept, rem = remaining();
+  const pips = Array.from({length:BUDGET},(_,i)=>`<i class="${i<rem?'':'u'}"></i>`).join('');
+  const tiles = DEPTS.map(k=>{
+    const n = countIn(k);
+    const bars = Array.from({length:DEPT_MAX},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('');
+    const status = n===0 ? `<span class="need">${t('needOne')}</span>` : n>=DEPT_MAX ? t('maxed') : `${t('askedN',{n})} (${t('maxN')})`;
+    return `<button class="dtile" data-act="dept" data-v="${k}" aria-pressed="${k===d}">
+      <span class="av">${DEPT[k].init[lg]}</span><span class="dn">${dn(k)}</span>
+      <span class="dcount"><span class="bars">${bars}</span>${status}</span>
+      <span class="pp">${DEPT[k].person[lg]}${cm()}${DEPT[k].role[lg]}</span></button>`;
+  }).join('');
+  const qs = QUESTIONS.filter(q=>q.dept===d);
+  const ca = canAsk(d);
+  const list = qs.map(q=>{
+    const asked = state.asked.includes(q.id);
+    const cls = ['q', asked?'asked':'', state.viewQ===q.id?'viewing':'', (!asked && !ca.ok)?'blocked':''].join(' ');
+    return `<li><button class="${cls}" role="radio" aria-checked="${state.selQ===q.id}" data-act="selq" data-v="${q.id}">
+      <span class="rd">${asked?ico('check','s'):''}</span><span>${tx(q.q)}${asked?`<span class="st">${t('askedLbl')}</span>`:''}</span></button></li>`;
+  }).join('');
+  let why = '';
+  if(!ca.ok){
+    if(ca.why==='none') why = t('whyNone');
+    else if(ca.why==='max') why = t('whyMax');
+    else why = t('whyReserve',{depts: ca.need.map(x=>dn(x)).join(lg==='ar'?' و':' and ')});
+  }
+  const canPress = ca.ok && state.selQ && !state.asked.includes(state.selQ);
+  const askbar = `<div class="askbar">
+    <button class="btn btn-p" data-act="ask" ${canPress?'':'disabled'}>${ico('search')} ${t('askBtn')}</button>
+    <span class="note">${!ca.ok ? `<span style="color:var(--amber);font-weight:600">${why}</span>` : (state.selQ && !state.asked.includes(state.selQ) ? t('usesOne',{n:rem}) : t('pickFirst'))}</span></div>`;
+
+  /* answer panel */
+  let ans;
+  const vq = state.viewQ && QMAP[state.viewQ] && QMAP[state.viewQ].dept===d ? QMAP[state.viewQ] : null;
+  if(vq){
+    const P = DEPT[vq.dept];
+    const tag = vq.doc
+      ? `<div class="found"><div><span class="chip rec">${ico('doc','s')} ${t('tagRecord')}</span><div style="margin-top:6px"><b>${docn(vq.doc)}</b></div><div class="note">${t('recNote')}</div></div><button class="btn btn-s" data-act="opendoc" data-v="${vq.doc}">${t('openRecord')}</button></div>`
+      : `<div><span class="chip ins">${ico('chat','s')} ${t('tagInsight')}</span><p class="note" style="margin:8px 0 0">${t('insNote')}</p></div>`;
+    ans = `<div class="who"><span class="av">${P.init[lg]}</span><div><b>${P.person[lg]}</b><span>${P.role[lg]}${cm()}${dn(vq.dept)}</span></div></div>
+      <p class="asked-q">${tx(vq.q)}</p><p class="ans">${tx(vq.a)}</p>${tag}`;
+  } else {
+    ans = `<div class="empty">${ico('chat')}<div>${t('ansEmpty',{name:DEPT[d].person[lg]})}</div></div>`;
+  }
+
+  const covered = allDeptsCovered();
+  const primaryCont = covered && rem===0;
+  return `<section>
+  <div class="shead"><div><h2>${t('s1t')}</h2><p class="inst">${t('s1i')}</p><p class="sub">${t('s1s')}</p></div>
+    <div class="budget" aria-live="polite"><div><div class="lbl">${t('remaining')}</div><div class="num">${rem} <small>/ ${BUDGET}</small></div></div><div class="pips" aria-hidden="true">${pips}</div></div></div>
+  <div class="depts" role="group">${tiles}</div>
+  <div class="desk">
+    <div class="panel qpanel"><h3>${t('qsFor',{name:DEPT[d].person[lg]})}</h3><ul class="qlist" role="radiogroup">${list}</ul>${askbar}</div>
+    <div class="panel apanel" aria-live="polite">${ans}</div>
+  </div>
+  <div class="sfoot"><span class="hint">${!covered ? t('needDepts') : rem>0 ? t('leftNote',{n:rem}) : ''}</span>
+    <button class="btn ${primaryCont?'btn-p':'btn-s'}" data-act="toS2" ${covered?'':'disabled'}>${t('toMap')}</button></div>
+  </section>`;
+}
+function askQuestion(){
+  const q = QMAP[state.selQ]; if(!q || state.asked.includes(q.id)) return;
+  if(!canAsk(q.dept).ok) return;
+  state.asked.push(q.id); state.viewQ = q.id; state.selQ = null;
+  render();
+  if(q.doc){ toast(`${t('toastNew')}: ${docn(q.doc)}`); const b=$('#evbtn'); if(b){ b.classList.add('pulse'); setTimeout(()=>b.classList.remove('pulse'),2100);} }
+}
+
+/* ===================== evidence drawer ===================== */
+function docHTML(id){
+  const D = DOCS[id];
+  let h = `<article class="doc"><div class="dh"><span>PulseServe${cm()}${dn(D.dept)}</span><b class="ltr">${D.code}</b></div>
+    <h3>${tx(D.title)}</h3><div class="dsub">${t('caseL')} <span class="ltr">PS-4821</span>${cm()}${t('verified')}</div>`;
+  if(D.intro) h += `<p class="intro">${tx(D.intro)}</p>`;
+  if(D.list) h += `<ol>${D.list.map(x=>`<li>${tx(x)}</li>`).join('')}</ol>`;
+  if(D.meta) h += `<dl>${D.meta.map(([k,v])=>`<dt>${tx(k)}</dt><dd>${tx(v)}</dd>`).join('')}</dl>`;
+  if(D.rows) h += `<table><thead><tr><th>${t('time')}</th><th>${t('entry')}</th></tr></thead><tbody>${D.rows.map(([a,b])=>`<tr><td>${tx(a)}</td><td>${tx(b)}</td></tr>`).join('')}</tbody></table>`;
+  if(D.note) h += `<div class="dn">${tx(D.note)}</div>`;
+  return h + `</article>`;
+}
+function renderDrawer(){
+  const dr = state.drawer, lg = LG();
+  const docs = unlockedDocs(), ins = insights();
+  let body;
+  if(dr.doc && docs.includes(dr.doc)){
+    body = `<button class="btn btn-g" data-act="dback" style="margin-bottom:10px">${ico(lg==='ar'?'right':'left','s')} ${t('back')}</button>${docHTML(dr.doc)}`;
+  } else if(dr.tab==='docs'){
+    body = docs.length ? `<ul class="dlist">${docs.map(id=>`<li><button class="ditem" data-act="opendoc" data-v="${id}">${ico('doc')}<span><b>${docn(id)}</b><small>${dn(DOCS[id].dept)}${cm()}<span class="ltr">${DOCS[id].code}</span></small></span></button></li>`).join('')}</ul>`
+      : `<div class="empty" style="min-height:200px">${ico('doc')}<div>${t('noDocs')}</div></div>`;
+  } else {
+    body = ins.length ? `<p class="disc">${t('insDisc')}</p><ul class="dlist">${ins.map(id=>{const q=QMAP[id];return `<li class="insight"><div class="src"><span>${DEPT[q.dept].person[lg]}${cm()}${dn(q.dept)}</span><span class="chip ins">${t('tagInsight')}</span></div><p>${tx(q.ins)}</p></li>`;}).join('')}</ul>`
+      : `<div class="empty" style="min-height:200px">${ico('chat')}<div>${t('noIns')}</div></div>`;
+  }
+  $('#drawer').innerHTML = `<div class="dhead"><h2 id="dtitle">${t('dTitle')}</h2><button class="btn btn-g" data-act="dclose" aria-label="${t('close')}">${ico('x')}</button></div>
+    <div class="dtabs" role="tablist"><button role="tab" aria-selected="${dr.tab==='docs'}" data-act="dtab" data-v="docs">${t('dDocs')} (${docs.length})</button><button role="tab" aria-selected="${dr.tab==='ins'}" data-act="dtab" data-v="ins">${t('dIns')} (${ins.length})</button></div>
+    <div class="dbody">${body}</div>`;
+  $('#drawer').classList.toggle('open', dr.open);
+  $('#drawer').setAttribute('aria-hidden', !dr.open);
+  $('#scrim').classList.toggle('open', dr.open);
+}
+let toastTimer;
+function toast(msg){ const el=$('#toast'); el.innerHTML = `${ico('doc')}<span>${esc(msg)}</span>`; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'), window.innerWidth<820?2200:3200); }
+
+/* ===================== slot model =====================
+   Eight slots: 'm:0'..'m:5' (main journey) and 'r:0','r:1' (exception activities).
+   Each exception also stores its own trigger and return step (card IDs). These are kept
+   even if those cards move, and are only drawn while they sit in the main journey.     */
+const M = () => state.map;
+const SLOTS = ['m:0','m:1','m:2','m:3','m:4','m:5','r:0','r:1'];
+function getS(s){ const [k,i]=s.split(':'); return k==='m' ? M().main[+i] : M().ret[+i].act; }
+function setS(s,id){ const [k,i]=s.split(':'); if(k==='m') M().main[+i]=id; else M().ret[+i].act=id; }
+const whereIs = id => SLOTS.find(s=>getS(s)===id) || null;
+const placedCards = () => SLOTS.map(getS).filter(Boolean);
+const mapCards = placedCards;
+const validIn = id => !!id && M().main.includes(id);
+const effRet = () => M().ret.map(r=>({act:r.act, trigger: validIn(r.trigger)?r.trigger:null, back: validIn(r.back)?r.back:null}));
+
+function snap(){ state.undo.push(JSON.stringify(state.map)); if(state.undo.length>80) state.undo.shift(); }
+function placeFromTray(id, target){
+  let s = target || state.armed || SLOTS.find(x=>!getS(x));
+  if(!s){ state.note='trayFull'; render(); return; }
+  snap();
+  const from = whereIs(id), cur = getS(s);
+  if(from){ setS(from, cur||null); }
+  setS(s, id);
+  state.armed=null; state.sel=null; state.note=null; render();
+}
+function moveSlot(from, to){
+  if(from===to) return; snap();
+  const a=getS(from), b=getS(to); setS(to,a); setS(from,b||null);
+  state.sel=null; state.armed=null; render();
+}
+function toTray(s){ if(!getS(s)) return; snap(); setS(s,null); state.sel=null; render(); }
+function completeness(){
+  const m=M(), e=effRet();
+  const placed = placedCards();
+  const c = {main:m.main.filter(Boolean).length, ex:m.ret.filter(r=>r.act).length,
+    trig:e.filter(r=>r.act&&r.trigger).length, back:e.filter(r=>r.act&&r.back).length,
+    own:placed.filter(id=>m.dept[id]).length, ownOf:placed.length};
+  c.missing = (6-c.main)+(2-c.ex)+(c.ex-c.trig)+(c.ex-c.back)+(c.ownOf-c.own);
+  return c;
+}
+
+/* ===================== process map renderer =====================
+   o = {main, ret, dept, conf, mode:'edit'|'view', clickAct, sel, flags, extra}           */
+function mapHTML(o){
+  const ids = o.main, edit = o.mode==='edit';
+  let h = `<div class="map ${edit?'editing':''}" data-map>`;
+  if(edit) h += `<div class="zonelbl">${t('mainLbl')}</div>`;
+  h += `<div class="mrow mainrow"><div class="se" data-node="s">${t('startN')}</div>`;
+  ids.forEach((id,i)=>{ h += id ? cardHTML(id,o,{slot:'m:'+i, node:i}) : slotHTML('m:'+i,o,i); });
+  h += `<div class="se" data-node="e">${t('endN')}</div></div>`;
+  if(edit) h += `<div class="exzone"><div class="zonelbl ex">${t('exLbl')}</div>`;
+  let h0 = h;
+  /* read-only views: exceptions share one lane unless their columns collide */
+  const used = [];
+  const rowOf = (k,col) => { if(edit) return k; let r=0; while(used[r] && used[r].includes(col)) r++; (used[r]=used[r]||[]).push(col); return r; };
+  const laneHTML = {};
+  (o.ret||[]).forEach((r,k)=>{
+    if(!edit && !r.act) return;
+    const ti = r.trigger && ids.includes(r.trigger) ? ids.indexOf(r.trigger) : null;
+    const bi = r.back && ids.includes(r.back) ? ids.indexOf(r.back) : null;
+    const col = ti===null ? 0 : ti;
+    let h = '';
+    if(edit) h += `<div class="lanetag" style="grid-column:1" title="${t('exN',{n:k+1})}">${ico('ret','s')}<b>${k+1}</b></div>`;
+    h += `<div class="rcell" style="grid-column:${col+2}" data-lane="${k}" data-trig="${ti===null?'':ti}" data-back="${bi===null?'':bi}">` +
+      (r.act ? cardHTML(r.act,o,{slot:'r:'+k, lane:r, ti}) : slotHTML('r:'+k,o,null)) + `</div>`;
+    if(edit){
+      const pc = col>=2 ? `${col} / span 2` : `${col+3} / span 2`;
+      const opts = (v,ph) => `<option value="">${ph}</option>` + ids.filter(Boolean).map(id=>`<option value="${id}" ${v===id?'selected':''}>${cn(id)}</option>`).join('');
+      const stale = (r.trigger && ti===null) || (r.back && bi===null);
+      const read = (r.act && ti!==null && bi!==null) ? `<p class="pathread">${t('pathRead',{a:cn(r.trigger),b:cn(r.act),c:cn(r.back)})}</p>` : `<p class="pathread open">${t('pathOpen')}</p>`;
+      h += `<div class="lanepanel" style="grid-column:${pc}"><div class="lp-h">${t('exN',{n:k+1})}</div>
+        <label>${t('rTrig')}<select data-chg="lane" data-k="${k}" data-f="trigger">${opts(ti===null?null:r.trigger, t('chooseTrig'))}</select></label>
+        <label>${t('rBack')}<select data-chg="lane" data-k="${k}" data-f="back">${opts(bi===null?null:r.back, t('chooseBack'))}</select></label>
+        ${stale?`<p class="stale">${ico('info','s')} ${t('laneStale')}</p>`:read}</div>`;
+    }
+    const row = rowOf(k,col); laneHTML[row] = (laneHTML[row]||'') + h;
+  });
+  Object.keys(laneHTML).sort().forEach(row=>{ h0 += `<div class="mrow rrow ${edit?'edit':''}">${laneHTML[row]}</div>`; });
+  if(edit) h0 += `<div class="exhelp">${ico('info')}<div><p>${t('exHelp')}</p><ol>${t('exHelpList').map(x=>`<li>${x}</li>`).join('')}</ol><p class="exex">${t('exExample')}</p></div></div></div>`;
+  h = h0;
+  return h + `<svg class="wires" aria-hidden="true"></svg></div>`;
+}
+function cardHTML(id,o,{slot,node,lane,ti}){
+  const c = CARDS[id], d = o.dept[id], edit = o.mode==='edit';
+  const cls = ['mc', d?'owned':'', (o.sel===id)?'sel':'', ...((o.flags&&o.flags[id])||[])];
+  let attrs = node!==undefined ? ` data-node="${node}"` : '';
+  if(edit){ cls.push('drag'); attrs += ` draggable="true" data-drag="${slot}" data-drop="${slot}" data-act="slot" data-s="${slot}" tabindex="0" role="button" aria-pressed="${o.sel===id}"`; }
+  if(o.clickAct){ cls.push('clk','pick'); attrs += ` data-act="${o.clickAct}" data-v="${id}" tabindex="0" role="button"`; }
+  let inner = '';
+  if(lane) inner += ti!==null && ti!==undefined ? `<div class="cap">${tx(CARDS[lane.trigger].decision)} <b>${t('no')}</b></div>` : `<div class="cap muted">${t('noTrig')}</div>`;
+  inner += `<div class="tt">${tx(c.title)}</div>`;
+  if(edit){
+    inner += `<label class="ownsel"><span>${t('ownerLbl')}</span><select class="dsel" data-chg="dept" data-card="${id}"><option value="">${t('deptChoose')}</option>${DEPTS.map(k=>`<option value="${k}" ${d===k?'selected':''}>${dn(k)}</option>`).join('')}</select></label>`;
+  } else {
+    inner += `<div class="own">${ico('user','s')}${d?dn(d):t('ownerNone')}</div>`;
+  }
+  if(o.extra && o.extra[id]) inner += o.extra[id];
+  return `<div class="${cls.join(' ')}"${attrs}>${inner}</div>`;
+}
+function slotHTML(s,o,node){
+  const edit = o.mode==='edit', armed = state.armed===s, isEx = s[0]==='r';
+  if(!edit) return `<div class="slot view"${node!==null?` data-node="${node}"`:''}>${t('emptyView')}</div>`;
+  return `<div class="slot ${isEx?'exslot':''} ${armed?'armed':''}"${node!==null?` data-node="${node}"`:''} data-drop="${s}" data-act="slot" data-s="${s}" tabindex="0" role="button">${armed?t('placeArmed'):(isEx?t('exSlot'):t('placeHere'))}</div>`;
+}
+function drawWires(){
+  document.querySelectorAll('[data-map]').forEach(map=>{
+    const svg = map.querySelector('svg.wires'); if(!svg) return;
+    const R = map.getBoundingClientRect();
+    svg.setAttribute('viewBox',`0 0 ${R.width} ${R.height}`); svg.setAttribute('width',R.width); svg.setAttribute('height',R.height);
+    const rel = el => { const r=el.getBoundingClientRect(); return {l:r.left-R.left, r:r.right-R.left, t:r.top-R.top, b:r.bottom-R.top, cx:(r.left+r.right)/2-R.left, cy:(r.top+r.bottom)/2-R.top}; };
+    const nodesEl = [...map.querySelectorAll('.mainrow > [data-node]')], nodes = nodesEl.map(rel);
+    let s = `<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#080928"/></marker>
+      <marker id="ahl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9AA8BE"/></marker>
+      <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#C9780F"/></marker></defs>`;
+    const yesAfter = new Set();
+    map.querySelectorAll('.rcell').forEach(c=>{ if(c.dataset.trig!=='') yesAfter.add(+c.dataset.trig); });
+    for(let k=0;k<nodes.length-1;k++){
+      const a=nodes[k], b=nodes[k+1], ltr = b.cx > a.cx;
+      const x1 = ltr ? a.r+3 : a.l-3, x2 = ltr ? b.l-3 : b.r+3, y = a.cy;
+      const empty = nodesEl[k].classList.contains('slot') || nodesEl[k+1].classList.contains('slot');
+      s += `<line class="mainarrow" x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${empty?'#9AA8BE':'#080928'}" stroke-width="2" ${empty?'stroke-dasharray="4 4"':''} marker-end="url(#${empty?'ahl':'ah'})"/>`;
+      if(yesAfter.has(k-1)) s += `<text x="${(x1+x2)/2}" y="${y-8}" text-anchor="middle" fill="#080928">${t('yes')}</text>`;
+    }
+    map.querySelectorAll('.rcell').forEach(cell=>{
+      if(cell.dataset.trig==='') return;
+      const ti = +cell.dataset.trig, trig = nodes[ti+1], card = cell.firstElementChild; if(!trig||!card) return;
+      const lane = +cell.dataset.lane, rc = rel(card), xd = trig.cx - 18;
+      s += `<path class="downwire" data-lane="${lane}" d="M${xd} ${trig.b+3} V${rc.t-3}" stroke="#C9780F" stroke-width="2" fill="none" marker-end="url(#aha)"/>`;
+      s += `<text x="${xd-6}" y="${trig.b+26}" text-anchor="end" fill="#C9780F">${t('no')}</text>`;
+      if(cell.dataset.back!==''){
+        const bi = +cell.dataset.back, back = nodes[bi+1];
+        if(bi===ti) s += `<path class="upwire" data-lane="${lane}" d="M${trig.cx+18} ${rc.t-3} V${trig.b+3}" stroke="#C9780F" stroke-width="2" fill="none" marker-end="url(#aha)"/>`;
+        else { const ly = trig.b + 16 + lane*9;
+          s += `<path class="upwire" data-lane="${lane}" d="M${rc.cx+18} ${rc.t-3} V${ly} H${back.cx+18} V${back.b+3}" stroke="#C9780F" stroke-width="2" fill="none" stroke-linejoin="round" marker-end="url(#aha)"/>`; }
+      }
+    });
+    svg.innerHTML = s;
+  });
+}
+
+/* ===================== stage 2: integrated mapping workspace ===================== */
+function stepperHTML(cur){
+  return `<ol class="stepper">${[t('st1'),t('st2'),t('st3')].map((s,i)=>`<li class="${i===cur?'cur':(i<cur?'done':'')}"><span class="n">${i<cur?ico('check','s'):i+1}</span>${s}</li>`).join('')}</ol>`;
+}
+function s2HTML(){
+  const m = M(), lg = LG(), c = completeness();
+  if(m.view==='review'){
+    const row = (lbl,a,b) => `<li class="${a===b?'ok':''}"><span>${a===b?ico('check','s'):ico('info','s')}</span>${lbl}<b>${a} / ${b}</b></li>`;
+    return `<section><div class="shead"><div><h2>${t('reviewT')}</h2><p class="inst">${t('reviewS')}</p></div>${stepperHTML(1)}</div>
+      <div class="mapwrap">${mapHTML({main:m.main, ret:m.ret, dept:m.dept, conf:m.conf, mode:'view'})}</div>
+      <div class="panel checklist"><h3>${t('chkT')}</h3><ul>${row(t('chMain'),c.main,6)}${row(t('chEx'),c.ex,2)}${row(t('chTrig'),c.trig,c.ex||2)}${row(t('chBack'),c.back,c.ex||2)}${row(t('chOwn'),c.own,c.ownOf||8)}</ul><p class="note">${t('chNote')}</p></div>
+      ${state.confirm==='submit'?confirmHTML(t('incQ',{n:c.missing}),'submitForce',t('subAny'),t('keep')):''}
+      <div class="sfoot"><button class="btn btn-s" data-act="editmap">${ico('edit','s')} ${t('backEdit')}</button><button class="btn btn-p" data-act="submit">${t('submit')}</button></div></section>`;
+  }
+  const how = state.how ? `<div class="how"><b>${t('howT')}</b><span class="mini">${t('howMain').map(x=>`<span>${x}</span>`).join(`<span style="border:0;background:none;padding:0">${lg==='ar'?'←':'→'}</span>`)}</span><span class="mini"><span class="ret">${t('howRet')}</span></span><span>${t('howEnd')}</span></div>` : '';
+  const tray = TRAY_ORDER.filter(id=>!whereIs(id));
+  const sel = state.sel && whereIs(state.sel);
+  let tool = '';
+  if(sel){
+    const [k,i] = sel.split(':');
+    const loc = k==='m' ? t('inMain',{n:+i+1}) : t('exN',{n:+i+1});
+    tool = `<div class="seltool"><b>${cn(state.sel)}</b><span class="loc">${loc}</span>
+      ${k==='m'?`<button class="btn btn-g" data-act="mv" data-v="-1" ${+i===0?'disabled':''}>${ico(lg==='ar'?'right':'left','s')} ${t('earlier')}</button><button class="btn btn-g" data-act="mv" data-v="1" ${+i===5?'disabled':''}>${t('later')} ${ico(lg==='ar'?'left':'right','s')}</button>`:''}
+      <button class="btn btn-g" data-act="rm">${ico('x','s')} ${t('toTray')}</button>
+      <button class="btn btn-s" data-act="desel" style="margin-inline-start:auto">${t('done')}</button>
+      <p class="note" style="flex-basis:100%;margin:2px 0 0">${t('moveHint')}</p></div>`;
+  }
+  return `<section><div class="shead"><div><h2>${t('s2t')}</h2><p class="inst">${t('i1')}</p><p class="sub">${t('i1s')}</p></div>
+    <div class="row">${stepperHTML(0)}<button class="btn btn-g" data-act="how" aria-expanded="${state.how}">${ico('info','s')} ${t('how')}</button></div></div>${how}
+    <div class="mapwrap">${mapHTML({main:m.main, ret:m.ret, dept:m.dept, conf:m.conf, mode:'edit', sel:state.sel})}</div>${tool}
+    <div class="tray" data-drop="tray"><div class="row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">${t('tray')} (${tray.length})</h3>
+      <div class="edit-tools"><button class="btn btn-g" data-act="undo" ${state.undo.length?'':'disabled'}>${ico('undo','s')} ${t('undo')}</button><button class="btn btn-g" data-act="reset">${ico('reset','s')} ${t('reset')}</button></div></div>
+      <div class="cards">${tray.length?tray.map(id=>`<button class="tc" draggable="true" data-drag="tray:${id}" data-act="tray" data-v="${id}">${cn(id)}</button>`).join(''):`<p class="note" style="margin:0">${t('trayDone')}</p>`}</div>
+      ${state.note==='trayFull'?`<p class="msg">${ico('info','s')} ${t('trayFull')}</p>`:''}</div>
+    ${state.confirm==='reset'?confirmHTML(t('resetQ'),'resetYes',t('resetYes'),t('cancel')):''}
+    <div class="sfoot"><span class="hint">${t('progress',{a:c.main,b:c.ex})}</span><button class="btn btn-p" data-act="review">${ico('search','s')} ${t('reviewBtn')}</button></div></section>`;
+}
+function confirmHTML(msg, yesAct, yesLbl, noLbl){
+  return `<div class="confirm" role="alertdialog"><p>${msg}</p><button class="btn btn-p" data-act="${yesAct}">${yesLbl}</button><button class="btn btn-s" data-act="cnone">${noLbl}</button></div>`;
+}
+function submitMap(force){
+  const c = completeness();
+  if(c.missing && !force){ state.confirm='submit'; render(); return; }
+  M().submitted = true; state.confirm=null;
+  const cards = new Set(mapCards());
+  state.risks = state.risks.filter(r=>cards.has(r.card));
+  goStage(3);
+}
+
+/* ===================== stage 3: risks ===================== */
+function riskMarkers(){
+  const ex = {};
+  state.risks.forEach((r,i)=>{ ex[r.card] = (ex[r.card]||'') + `<span class="mk">${ico('flag','s')}${i+1}</span>`; });
+  Object.keys(ex).forEach(k=>ex[k]=`<div class="mks">${ex[k]}</div>`);
+  return ex;
+}
+function s3HTML(){
+  const m = M(), lg = LG(), dr = state.draft;
+  const flow = t('f3').map((s,i)=>`<span>${i+1}. ${s}</span>`).join(lg==='ar'?' ← ':' → ');
+  let form;
+  if(dr){
+    const docs = unlockedDocs(), ins = insights();
+    const evList = (docs.length||ins.length) ? 
+      (docs.length?`<div class="evgrp">${t('recs')}</div>`+docs.map(id=>`<label class="ev"><input type="checkbox" data-chg="ev" value="${id}" ${dr.ev.includes(id)?'checked':''}><span>${docn(id)}<small>${dn(DOCS[id].dept)}</small></span></label>`).join(''):'') +
+      (ins.length?`<div class="evgrp">${t('inss')}</div>`+ins.map(id=>`<label class="ev"><input type="checkbox" data-chg="ev" value="${id}" ${dr.ev.includes(id)?'checked':''}><span>${tx(QMAP[id].ins)}<small>${DEPT[QMAP[id].dept].person[lg]}${cm()}${t('tagInsight')}</small></span></label>`).join(''):'')
+      : `<p class="note">${t('noEv')}</p>`;
+    form = `<div class="panel rform"><h3>${dr.id?t('update'):t('save')}</h3>
+      <div class="fl">${t('loc')}</div><div style="font-weight:700">${cn(dr.card)}</div>
+      <div class="fl">${t('rType')}</div><div class="cats" role="radiogroup">${Object.keys(RCATS).map(c=>`<button class="cat" role="radio" aria-checked="${dr.cat===c}" data-act="cat" data-v="${c}">${catn(c)}</button>`).join('')}</div>
+      <div class="fl">${t('link')}</div><div class="evs">${evList}
+        <label class="ev vf"><input type="checkbox" data-chg="verify" ${dr.verify?'checked':''}><span><b>${t('verify')}</b><small>${t('verifyH')}</small></span></label></div>
+      ${state.note?`<p class="msg">${ico('info','s')} ${t(state.note)}</p>`:''}
+      <div class="row" style="margin-top:14px"><button class="btn btn-p" data-act="saverisk">${dr.id?t('update'):t('save')}</button><button class="btn btn-g" data-act="cancelrisk">${t('cancel')}</button></div></div>`;
+  } else {
+    form = `<div class="panel pickprompt">${ico('flag')}<span>${t('pickP')}</span></div>`;
+  }
+  const list = state.risks.length ? state.risks.map((r,i)=>`<div class="ri"><span class="mk">${ico('flag','s')}${i+1}</span><b>${catn(r.cat)}</b>
+      <span class="acts"><button class="btn btn-g" data-act="editrisk" data-v="${r.id}" aria-label="${t('edit')}">${ico('edit','s')}</button><button class="btn btn-g" data-act="rmrisk" data-v="${r.id}" aria-label="${t('remove')}">${ico('x','s')}</button></span>
+      <small>${cn(r.card)} | ${r.ev.length? r.ev.map(e=>DOCS[e]?docn(e):t('tagInsight')).filter((v,j,a)=>a.indexOf(v)===j).join(lg==='ar'?'، ':', ') : (r.verify?t('verify'):t('noLinked'))}${r.ev.length&&r.verify?' | '+t('verify'):''}</small></div>`).join('')
+    : `<p class="note">${t('noRisks')}</p>`;
+  return `<section><div class="shead"><div><h2>${t('s3t')}</h2><p class="inst">${t('i3')}</p><div class="flowline" style="margin-top:6px">${flow}</div></div>
+    <div class="budget"><div><div class="lbl">${t('rCount')}</div><div class="num">${state.risks.length} <small>/ 3</small></div></div><div class="lbl" style="max-width:9em">${t('aim')}</div></div></div>
+    <div class="mapwrap">${mapHTML({main:m.main, ret:m.ret, dept:m.dept, mode:'view', clickAct:'pickcard', sel:dr?dr.card:null, extra:riskMarkers()})}</div>
+    <div class="rgrid">${form}<div class="panel rlist"><h3>${t('yourRisks')}</h3>${list}</div></div>
+    ${state.confirm==='reveal'?confirmHTML(t('fewQ',{n:state.risks.length}),'revealForce',t('reveal'),t('keepLook')):''}
+    <div class="sfoot"><button class="btn btn-s" data-act="backS2">${t('toMapBack')}</button><button class="btn btn-p" data-act="reveal">${t('reveal')}</button></div></section>`;
+}
+function saveRisk(){
+  const dr = state.draft; if(!dr) return;
+  if(!dr.cat){ state.note='chooseCat'; render(); return; }
+  if(state.risks.some(r=>r.card===dr.card && r.cat===dr.cat && r.id!==dr.id)){ state.note='dup'; render(); return; }
+  if(dr.id){ const i = state.risks.findIndex(r=>r.id===dr.id); state.risks[i] = {...dr}; }
+  else state.risks.push({...dr, id:'r'+(state.rseq++)});
+  state.draft=null; state.note=null; render();
+}
+
+/* ===================== evaluation (structured, for the results screen) ===================== */
+const DISCUSS = {
+  E:{en:'Processing used data that was already wrong. The weakness was earlier, at data entry and the reference check.',ar:'التنفيذ استخدم بيانات كانت خطأ بالفعل. الضعف كان قبل ذلك، عند إدخال البيانات وفحص الرقم.'},
+  F:{en:'Quality found the error, so this check worked. The rework started from problems in earlier steps.',ar:'الجودة اكتشفت الخطأ، أي أن هذا الفحص نجح. إعادة العمل سببها مشاكل في Steps سابقة.'},
+  H:{en:'The customer was told within an hour of approval. The evidence shows no weakness here.',ar:'تم إبلاغ العميل خلال ساعة من الموافقة، والأدلة لا تُظهر ضعفًا هنا.'},
+  Dmissing:{en:'At this step the reference was not missing: the customer sent it, and then it was typed wrongly.',ar:'في هذه الـ Step لم يكن الرقم ناقصًا: العميل أرسله، ثم كُتب بشكل خطأ.'},
+  Cmissing:{en:'This check did find the missing reference. The weakness came later, when it passed a filled field without checking the number.',ar:'هذا الفحص اكتشف فعلًا الرقم الناقص. الضعف جاء بعد ذلك، عندما قبل خانة ممتلئة دون التأكد من الرقم.'},
+  other:{en:'The evidence points to a different type of risk at this step: {c}.',ar:'الأدلة تشير إلى نوع مختلف من الـ Risk عند هذه الـ Step: {c}.'}
+};
+function evaluate(){
+  const m = M(), main = m.main, unlocked = new Set(unlockedDocs());
+  const exCards = m.ret.map(r=>r.act).filter(Boolean);
+  const isRefMain = id => REF.main.includes(id);
+  /* main flow, position by position */
+  const mainReview = REF.main.map((ref,i)=>({i, ref, mine:main[i],
+    st: main[i]===ref ? 'ok' : main.includes(ref) ? 'moved' : exCards.includes(ref) ? 'asex' : 'missing'}));
+  const extraInMain = main.filter(id=>id && !isRefMain(id));
+  const posFlag = new Set([...main.filter((id,i)=>id && id!==REF.main[i]), ...exCards.filter(isRefMain)]);
+  const placed = mapCards();
+  const wrongOwn = placed.filter(id=>m.dept[id]!==CARDS[id].dept);
+  /* exception paths */
+  const eret = effRet();
+  const loopRes = REF.loops.map(L=>{
+    const r = eret.find(x=>x.act===L.act);
+    if(!r) return {L, st: main.includes(L.act)?'inmain':'missing'};
+    if(!r.trigger || !r.back) return {L, st:'incomplete', r};
+    if(r.trigger===L.trigger && L.back.includes(r.back)) return {L,st:'ok',r};
+    if(r.trigger===L.trigger && L.equiv && L.equiv.includes(r.back)) return {L,st:'equiv',r};
+    if(r.trigger===L.trigger && L.discuss && L.discuss.includes(r.back)) return {L,st:'discuss',r};
+    return {L,st:'partial',r};
+  });
+  /* other exception lanes that hold main-flow cards */
+  const otherLanes = eret.filter(r=>r.act && isRefMain(r.act));
+  /* risks */
+  const riskEval = state.risks.map(pr=>{
+    const ref = [...REF_RISKS, EXTRA_RISK].find(r=>r.card===pr.card && r.cats.includes(pr.cat));
+    if(ref){
+      const strong = pr.ev.filter(e=>ref.strong.includes(e)), partial = pr.ev.filter(e=>ref.partial.includes(e));
+      return {pr, ref, st: strong.length?'supported':partial.length?'partial':pr.verify?'verify':'unsupported', strong};
+    }
+    let reason;
+    if(pr.card==='D' && pr.cat==='missing') reason = DISCUSS.Dmissing;
+    else if(pr.card==='C' && pr.cat==='missing') reason = DISCUSS.Cmissing;
+    else if(DISCUSS[pr.card]) reason = DISCUSS[pr.card];
+    else { const cats=[...new Set(REF_RISKS.filter(r=>r.card===pr.card).flatMap(r=>r.cats))]; reason = bi(lg=>DISCUSS.other[lg].replace('{c}', joinL(cats.map(c=>catn(c,lg)),lg))); }
+    return {pr, ref:null, st:'discuss', reason};
+  });
+  const missedRisks = REF_RISKS.filter(R=>!riskEval.some(x=>x.ref===R));
+  const usedDocs = new Set(riskEval.filter(x=>x.ref && x.st!=='supported').map(x=>x.ref.confirm));
+  const docTips = Object.keys(DOC_SHOWS).filter(d=>!unlocked.has(d) && !usedDocs.has(d)).sort((a,b)=>DOC_SHOWS[b].w-DOC_SHOWS[a].w).slice(0,3);
+  return {mainReview, extraInMain, posFlag, wrongOwn, loopRes, otherLanes, riskEval, missedRisks, docTips,
+    mainOk: mainReview.filter(x=>x.st==='ok').length};
+}
+
+/* ===================== stage 4: results ===================== */
+const REF_RET = [{trigger:'C',act:'D',back:'C'},{trigger:'F',act:'G',back:'F'}];
+const REF_DEPT = Object.fromEntries(Object.keys(CARDS).map(k=>[k,CARDS[k].dept]));
+const chip = (cls, txt) => `<span class="rchip ${cls}">${txt}</span>`;
+const STCLS = {ok:'ok', moved:'warn', asex:'bad', missing:'bad', equiv:'ok', discuss:'warn', partial:'warn', incomplete:'warn', inmain:'bad', supported:'ok', verify:'warn', unsupported:'warn'};
+function s4HTML(){
+  const lg = LG(), E = evaluate(), m = M();
+  const anim = !state.animDone; state.animDone = true;
+  const tot = {q1:0,q2:0,cust:0,other:0}; SEGMENTS.forEach(s=>tot[s.cat]+=s.to-s.from);
+  const pct = x => x/TOTAL_MIN*100;
+  const segs = SEGMENTS.map((s,i)=>{ const w=s.to-s.from; return `<div class="sg ${s.cat}" style="flex:${w} 1 0;animation-delay:${i*0.13}s" title="${esc(CATS_TIME[s.cat].name[lg])}: ${dur(w,lg)}">${w>=600?`<span>${dur(w,lg)}</span>`:''}</div>`; }).join('');
+  const axis = [{d:'mon',at:0},{d:'tue',at:900},{d:'wed',at:2340}].map(x=>`<span class="day" style="inset-inline-start:${pct(x.at)}%">${DAY[x.d][lg]}</span>`).join('');
+  const legend = ['q1','q2','cust','other'].map(k=>`<div class="lg ${CATS_TIME[k].hot?'hot':''}"><i style="background:${CATS_TIME[k].color}"></i><b>${dur(tot[k],lg)}</b><span>${CATS_TIME[k].name[lg]}</span><small>${CATS_TIME[k].range[lg]}</small></div>`).join('');
+
+  /* correct / my map */
+  const riskW = `<span class="mk">${ico('alert','s')}Risk</span>`;
+  const refExtra = {A:`<div class="mks">${riskW}</div>`,
+    B:`<span class="wait">${ico('clock','s')}${dur(1395,lg)}</span><div class="mks">${riskW}</div>`,
+    C:`<div class="mks">${riskW}</div>`,
+    D:`<span class="wait ext">${ico('clock','s')}${dur(130,lg)}</span><div class="mks">${riskW}</div>`,
+    G:`<span class="wait">${ico('clock','s')}${dur(1145,lg)}</span><div class="mks">${riskW}</div>`};
+  let mapBlock;
+  if(state.rview==='actual'){
+    mapBlock = `<div class="mapwrap">${mapHTML({main:REF.main, ret:REF_RET, dept:REF_DEPT, mode:'view', clickAct:'rcard', sel:state.rcard, extra:refExtra})}</div><div class="skipnote">${ico('info')}<span>${t('skip')}</span></div>`;
+  } else {
+    const flags={}, extra={};
+    mapCards().forEach(id=>{ const f=[],tags=[];
+      if(E.posFlag.has(id)){ f.push('f-pos'); tags.push(`<span class="flag">${t('fPos')}</span>`); }
+      if(E.wrongOwn.includes(id)){ f.push('f-own'); tags.push(`<span class="flag">${t('should',{d:dn(CARDS[id].dept)})}</span>`); }
+      flags[id]=f; extra[id]=tags.join(''); });
+    mapBlock = `<div class="mapwrap">${mapHTML({main:m.main, ret:m.ret, dept:m.dept, mode:'view', clickAct:'rcard', sel:state.rcard, flags, extra})}</div>`;
+  }
+  const c = state.rcard, C = CARDS[c], unlocked = new Set(unlockedDocs());
+  const risksHere = [...REF_RISKS, EXTRA_RISK].filter(r=>r.card===c);
+  const evIds = [...new Set(risksHere.length ? risksHere.flatMap(r=>r.strong) : CARD_DOCS[c])];
+  const det = `<div class="panel cdet" aria-live="polite"><div class="hd"><h4>${cn(c)}</h4><span class="own">${dn(C.dept)}</span></div>
+    <div><h5>${t('what')}</h5><p>${tx(C.happened)}</p></div>
+    <div>${risksHere.length?`<h5>${t('riskAt')}</h5>`+risksHere.map(r=>`<div class="rbox"><b>${r.name[lg]}</b><p>${r.text[lg]}</p></div>`).join(''):''}</div>
+    <div><h5>${t('evid')}</h5>${evIds.map(e=>`<div class="evrow"><span>${docn(e)}</span>${unlocked.has(e)?`<span class="y">${ico('check','s')} ${t('found')}</span>`:`<span class="n">${t('notFound')}</span>`}</div>`).join('')}</div></div>`;
+
+  /* 1. main flow review */
+  const mrows = E.mainReview.map(x=>`<li><span class="pos">${x.i+1}</span><div class="mrc"><b>${cn(x.ref)}</b><small>${t('mrYours')}: ${x.mine?cn(x.mine):t('emptyView')}</small></div>${chip(STCLS[x.st], t('mst')[x.st])}</li>`).join('');
+  const extras = E.extraInMain.map(id=>`<p class="rnote bad">${ico('alert','s')} ${t('mrExtra',{c:qn(cn(id),lg)})}</p>`).join('');
+  const ownLine = E.wrongOwn.length ? `<p class="rnote warn">${ico('user','s')} ${t('ownDiff',{n:E.wrongOwn.length})} ${joinL(E.wrongOwn.map(id=>`${cn(id)}: ${dn(CARDS[id].dept)}`),lg)}</p>` : `<p class="rnote ok">${ico('check','s')} ${t('ownOk')}</p>`;
+
+  /* 2. exception path review */
+  const pathTxt = (a,b,c) => t('correctPath',{a:cn(a),b:cn(b),c:cn(c)});
+  const erows = E.loopRes.map((l,k)=>{
+    const L=l.L;
+    const mine = (l.r && l.r.trigger && l.r.back) ? pathTxt(l.r.trigger, L.act, l.r.back) : (t('lnote')[l.st]||'');
+    const note = (l.st==='equiv'||l.st==='discuss') ? `<p class="rnote warn">${t('lnote')[l.st]}</p>` : '';
+    return `<div class="excard"><div class="exhd"><h4>${ico('ret','s')} ${t('exN',{n:k+1})}: ${cn(L.act)}</h4>${chip(STCLS[l.st], t('lst')[l.st])}</div>
+      <dl><dt>${t('erCorrect')}</dt><dd><b>${pathTxt(L.trigger, L.act, L.back[0])}</b></dd>
+      <dt>${t('erYours')}</dt><dd>${mine}</dd>
+      <dt>${t('erWhy')}</dt><dd>${LOOP_WHY[L.id][lg]}</dd></dl>${note}</div>`;
+  }).join('');
+
+  /* 3. key risks */
+  const mine = E.riskEval.length ? E.riskEval.map(x=>{
+    const why = x.ref ? (x.st==='supported' ? t('stWhy').supported : t('stWhy')[x.st].replace('{doc}', docn(x.ref.confirm))) : x.reason[lg];
+    return `<li><div><b>${x.ref?x.ref.name[lg]:catn(x.pr.cat)}</b> <span class="at">${cn(x.pr.card)}</span><small>${why}</small></div>${chip(STCLS[x.st]||'warn', t('st')[x.st])}</li>`; }).join('')
+    : `<li class="none">${t('rkNone')}</li>`;
+  const missed = E.missedRisks.length ? E.missedRisks.map(R=>`<li><div><b>${R.name[lg]}</b> <span class="at">${cn(R.card)}</span><small>${R.text[lg]}</small></div></li>`).join('') : `<li class="none">${t('rkAll')}</li>`;
+  const tips = E.docTips.length ? `<div class="tips"><h5>${ico('doc','s')} ${t('rkDocs')}</h5><ul>${E.docTips.map(d=>`<li><b>${docn(d)}</b>: ${DOC_SHOWS[d][lg]}</li>`).join('')}</ul></div>` : '';
+
+  return `<section class="results">
+  <div class="rv-hero"><div><h2>${t('s4t')}</h2><p>${t('s4s')}</p></div>
+    <div class="trio"><div><b>${dur(1440,lg)}</b><span>${t('committed')}</span></div><div><b>${dur(3060,lg)}</b><span>${t('actual')}</span></div><div class="ov"><b>${dur(1620,lg)}</b><span>${t('overrun')}</span></div></div></div>
+  <div class="panel tl"><h3 class="rh">${t('bd')}</h3>
+    <div class="bar ${anim?'anim':''}" role="img" aria-label="${esc(t('bd'))}">${segs}<div class="sla" style="inset-inline-start:${pct(SLA_MIN)}%"><span>${t('sla')}</span></div></div>
+    <div class="axis">${axis}</div><div class="legend">${legend}</div>
+    <div class="keyrev"><span class="big">${dur(tot.q1+tot.q2,lg)}</span><p>${t('rev')}</p><small>${t('revC')}</small></div>
+    <p class="slafact">${t('slaFact')}</p></div>
+
+  <div class="sec"><h3>${t('mapS')}<span class="seg" role="group"><button data-act="rview" data-v="actual" aria-pressed="${state.rview==='actual'}">${t('act')}</button><button data-act="rview" data-v="mine" aria-pressed="${state.rview==='mine'}">${t('myMap')}</button></span></h3>
+    <p class="note" style="margin:-4px 0 10px">${t('clickHint')}</p><div class="mapgrid"><div>${mapBlock}</div>${det}</div></div>
+
+  <div class="rgrid2">
+    <div class="panel rsec" id="mainReview"><h3 class="rh"><span class="num">1</span>${t('mrT')}</h3><p class="lead">${t('mrSum',{n:E.mainOk})}</p><ol class="mrl">${mrows}</ol>${extras}${ownLine}</div>
+    <div class="panel rsec" id="exReview"><h3 class="rh"><span class="num">2</span>${t('erT')}</h3>${erows}</div>
+  </div>
+  <div class="panel rsec" id="riskReview"><h3 class="rh"><span class="num">3</span>${t('rkT')}</h3>
+    <div class="rk2"><div><h5>${t('rkMine')}</h5><ul class="rkl">${mine}</ul></div><div><h5>${t('rkMissed')}</h5><ul class="rkl">${missed}</ul></div></div>${tips}</div>
+  <div class="panel rsec" id="opReview"><h3 class="rh"><span class="num">4</span>${t('opT')}</h3><ul class="opl">${t('opPts').map(p=>`<li>${p}</li>`).join('')}</ul></div>
+
+  <div class="closing"><div><p>${t('close1')}</p><ol>${t('close2').map(x=>`<li><b>${ico('check','s')}</b> ${x}</li>`).join('')}</ol></div>
+    <div>${state.confirm==='restart'?`<div class="row"><span style="max-width:22ch">${t('restartQ')}</span><button class="btn btn-p" data-act="restartYes">${t('restartYes')}</button><button class="btn restart btn-s" data-act="cnone">${t('cancel')}</button></div>`:`<button class="btn btn-s restart" data-act="restart">${t('restart')}</button>`}</div></div>
+  </section>`;
+}
+
+/* ===================== render & events ===================== */
+function render(){
+  document.documentElement.lang = state.lang; document.documentElement.dir = state.lang==='ar'?'rtl':'ltr';
+  document.title = t('title') + ' | Skills Bank';
+  $('#hdr').innerHTML = headerHTML();
+  $('#main').innerHTML = [welcomeHTML,s1HTML,s2HTML,s3HTML,s4HTML][state.stage]();
+  renderDrawer(); save();
+  requestAnimationFrame(drawWires);
+}
+function goStage(n){ $('#toast').classList.remove('show'); state.stage=n; state.maxStage=Math.max(state.maxStage,n); state.confirm=null; state.note=null; state.sel=null; state.armed=null; render(); window.scrollTo({top:0}); }
+
+document.addEventListener('click', e=>{
+  if(e.target.closest('select,input,label')) return;
+  const el = e.target.closest('[data-act]'); if(!el || el.disabled) return;
+  const a = el.dataset.act, v = el.dataset.v, m = M();
+  switch(a){
+    case 'lang': state.lang=v; render(); break;
+    case 'nav': { const i=+el.dataset.i; if(i===2) m.view='edit'; goStage(i); break; }
+    case 'start': goStage(1); break;
+    case 'dept': state.dept=v; state.selQ=null; render(); break;
+    case 'selq': if(state.asked.includes(v)){ state.viewQ=v; state.selQ=null; } else { state.selQ=v; } render(); break;
+    case 'ask': askQuestion(); break;
+    case 'toS2': goStage(2); break;
+    case 'drawer': state.drawer.open=true; state.drawer.doc=null; renderDrawer(); save(); setTimeout(()=>{const b=$('#drawer .dhead button'); b&&b.focus();},50); break;
+    case 'dclose': state.drawer.open=false; renderDrawer(); save(); break;
+    case 'dtab': state.drawer.tab=v; state.drawer.doc=null; renderDrawer(); save(); break;
+    case 'dback': state.drawer.doc=null; renderDrawer(); save(); break;
+    case 'opendoc': state.drawer.open=true; state.drawer.tab='docs'; state.drawer.doc=v; renderDrawer(); save(); break;
+    case 'tray': placeFromTray(v, null); break;
+    case 'slot': { const s=el.dataset.s, id=getS(s), from=state.sel&&whereIs(state.sel);
+      if(from){ if(from===s){ state.sel=null; render(); } else moveSlot(from, s); }
+      else if(id){ state.sel=id; state.armed=null; render(); }
+      else { state.armed = state.armed===s?null:s; render(); }
+      break; }
+    case 'desel': state.sel=null; state.armed=null; render(); break;
+    case 'mv': { const f=whereIs(state.sel); if(f&&f[0]==='m'){ const j=+f.split(':')[1]+(+v); if(j>=0&&j<6) moveSlot(f,'m:'+j); } break; }
+    case 'rm': { const f=whereIs(state.sel); if(f) toTray(f); break; }
+    case 'conf': snap(); if(v) m.conf[state.sel]=v; else delete m.conf[state.sel]; render(); break;
+    case 'undo': if(state.undo.length){ state.map = JSON.parse(state.undo.pop()); state.sel=null; render(); } break;
+    case 'reset': state.confirm='reset'; render(); break;
+    case 'resetYes': snap(); state.map.main=[null,null,null,null,null,null]; state.map.dept={}; state.map.conf={}; state.map.ret=[{trigger:null,act:null,back:null},{trigger:null,act:null,back:null}]; state.map.view='edit'; state.armed=null; state.confirm=null; state.sel=null; render(); break;
+    case 'cnone': state.confirm=null; render(); break;
+    case 'how': state.how=!state.how; render(); break;
+    case 'review': m.view='review'; state.sel=null; state.armed=null; state.confirm=null; render(); window.scrollTo({top:0}); break;
+    case 'editmap': m.view='edit'; state.confirm=null; render(); break;
+    case 'submit': submitMap(false); break;
+    case 'submitForce': submitMap(true); break;
+    case 'pickcard': state.draft={id:null, card:v, cat:null, ev:[], verify:false}; state.note=null; render(); break;
+    case 'cat': if(state.draft){ state.draft.cat=v; state.note=null; render(); } break;
+    case 'saverisk': saveRisk(); break;
+    case 'cancelrisk': state.draft=null; state.note=null; render(); break;
+    case 'editrisk': { const r=state.risks.find(x=>x.id===v); if(r){ state.draft=JSON.parse(JSON.stringify(r)); state.note=null; render(); } break; }
+    case 'rmrisk': state.risks=state.risks.filter(x=>x.id!==v); if(state.draft&&state.draft.id===v) state.draft=null; render(); break;
+    case 'backS2': m.view='edit'; goStage(2); break;
+    case 'reveal': if(state.risks.length<3){ state.confirm='reveal'; render(); } else { state.revealed=true; state.draft=null; goStage(4); } break;
+    case 'revealForce': state.revealed=true; state.draft=null; goStage(4); break;
+    case 'rview': state.rview=v; render(); break;
+    case 'rcard': state.rcard=v; render(); break;
+    case 'details': state.details=!state.details; render(); break;
+    case 'restart': state.confirm='restart'; render(); break;
+    case 'restartYes': { const lang=state.lang; state=fresh(); state.lang=lang; render(); window.scrollTo({top:0}); break; }
+  }
+});
+document.addEventListener('change', e=>{
+  const el = e.target.closest('[data-chg]'); if(!el) return;
+  const m = M(), k = el.dataset.chg;
+  if(k==='dept'){ snap(); if(el.value) m.dept[el.dataset.card]=el.value; else delete m.dept[el.dataset.card]; render(); }
+  else if(k==='lane'){ snap(); m.ret[+el.dataset.k][el.dataset.f]=el.value||null; render(); }
+  else if(k==='ev' && state.draft){ const s=new Set(state.draft.ev); el.checked?s.add(el.value):s.delete(el.value); state.draft.ev=[...s]; save(); }
+  else if(k==='verify' && state.draft){ state.draft.verify=el.checked; save(); }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && state.drawer.open){ state.drawer.open=false; renderDrawer(); save(); return; }
+  if((e.key==='Enter'||e.key===' ') && e.target.matches('[data-act]:not(button)')){ e.preventDefault(); e.target.click(); }
+});
+/* drag and drop */
+let dragSrc = null;
+document.addEventListener('dragstart', e=>{ const el=e.target.closest('[data-drag]'); if(!el) return; dragSrc=el.dataset.drag; e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',dragSrc);}catch(_){} });
+document.addEventListener('dragover', e=>{ const el=e.target.closest('[data-drop]'); if(!el||!dragSrc) return; e.preventDefault(); document.querySelectorAll('.dropok').forEach(x=>x!==el&&x.classList.remove('dropok')); el.classList.add('dropok'); });
+document.addEventListener('dragleave', e=>{ const el=e.target.closest('[data-drop]'); if(el && !el.contains(e.relatedTarget)) el.classList.remove('dropok'); });
+document.addEventListener('dragend', ()=>{ dragSrc=null; document.querySelectorAll('.dropok').forEach(x=>x.classList.remove('dropok')); });
+document.addEventListener('drop', e=>{
+  const el = e.target.closest('[data-drop]'); if(!el||!dragSrc) return; e.preventDefault();
+  const dragSrc0 = dragSrc, [sk,sv] = dragSrc.split(':'); dragSrc=null;
+  const src = dragSrc0, dst = el.dataset.drop;
+  if(sk==='tray' && dst!=='tray') placeFromTray(sv, dst);
+  else if(sk!=='tray' && dst!=='tray') moveSlot(src, dst);
+  else if(sk!=='tray' && dst==='tray') toTray(src);
+});
+let rz; window.addEventListener('resize', ()=>{ clearTimeout(rz); rz=setTimeout(drawWires,80); });
+$('#scrim').addEventListener('click', ()=>{ state.drawer.open=false; renderDrawer(); save(); });
+
+/* integrity check of the time model */
+(function(){ const s=SEGMENTS.reduce((a,x)=>a+(x.to-x.from),0); if(s!==TOTAL_MIN || SEGMENTS[0].from!==0 || SEGMENTS.some((x,i)=>i&&x.from!==SEGMENTS[i-1].to)) console.error('Time model inconsistent'); })();
+window.PS = {get state(){return state;}, evaluate, render};
+render();
+
+</script>
+</body>
+</html>
